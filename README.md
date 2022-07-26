@@ -73,6 +73,19 @@ System administration by using Docker containers
 
 ### Cgroup Namespace
 
+- Each cgroup namespace has its root cgroup directory. A cgroup namespace makes the process to view its current cgroup directory as the root cgroup directory of the namespace. This virtualization of the process' view on its cgroup hierarchy can be seen in `/proc/[pid]/cgroup` and `/proc/[pid]/mountinfo`. Below is the example. The top shell shows how the `bash` process in a separate cgroup namespace recognizes its cgroup as the root. The bottom shell shows how the isolated shell's cgroup is seen in the original cgroup namespace.
+
+<figure>
+<p align="center">
+  <img src="assets/cgroup_namespace.png" alt="cgroup namespace example" style="width: 72%; height: 72%; ">
+</p>
+</figure>
+
+- Advantages of using cgroup namespaces are:
+  - It **prevents information leaks**. Processes inside the cgroup namespace cannot see cgroup directory paths outside of the namespace.
+  - **Easy to migrate** containers since it is unnecessary to replicate the whole anscestral hierarchy of cgroup directory structure at the target location.
+  - It prevents processes inside the namespace from escaping the limits imposed by ancestor cgroups.
+
 #### What is a `cgroup`?
 
 - `cgroup` stands for a control group. It is "a collection of processes that are bound to a set of limits or parameters defined via the cgroup filesystem." ([`cgroup` man page](https://man7.org/linux/man-pages/man7/cgroups.7.html))
@@ -81,7 +94,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroupfs.png" alt="cgroupfs ls" style="width: 80%; height: 80%; ">
+  <img src="assets/cgroupfs.png" alt="cgroupfs ls" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -89,7 +102,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/new_cgroup.png" alt="new cgroup example" style="width: 80%; height: 80%; ">
+  <img src="assets/new_cgroup.png" alt="new cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -97,7 +110,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/moving_cgroup.png" alt="moving cgroup example" style="width: 80%; height: 80%; ">
+  <img src="assets/moving_cgroup.png" alt="moving cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -105,7 +118,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_limits.png" alt="cgroup limits example" style="width: 60%; height: 60%; ">
+  <img src="assets/cgroup_limits.png" alt="cgroup limits example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -113,7 +126,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_controllers.png" alt="cgroup hierarchy" style="width: 100%; height: 100%; ">
+  <img src="assets/cgroup_controllers.png" alt="cgroup controllers" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -134,7 +147,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%; ">
+  <img src="assets/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%;">
 </p>
 </figure>
 
@@ -147,17 +160,122 @@ System administration by using Docker containers
 
 ### IPC Namespace
 
+- IPC namespaces isolate [System V IPC objects](https://man7.org/linux/man-pages/man7/sysvipc.7.html) and POSIC message queues.
+- Only the processes inside the same IPC namespace can see the IPC objects created in the namespace. The objects are invisible to processes outside the namespace.
+- `/proc` interfaces distinct in each IPC namespace:
+  - The POSIX message queue interfaces in `/proc/sys/fs/mqueue`.
+  - The System V IPC interfaces in `/proc/sys/kernel`.
+  - The System V IPC interfaces in `/proc/sysvipc`.
+
 ### Network Namespace
+
+- Network namespaces isolate such networking resources:
+  - network devices
+  - IPv4 and IPv6 protocol stacks
+  - IP routing tables
+  - firewall rules
+  - `/proc/net` directory
+  - `sys/class/net` directory
+  - various files under `/proc/sys/net`
+  - port numbers (sockets)
+  - the UNIX domain abstract socket namespace
+- A physical network device can live in exactly one namespace.
+- Pipe-like tunnels between namespaces and bridges to physical network devices can be created by [`veth`](https://man7.org/linux/man-pages/man4/veth.4.html).
+- In the example below, two docker containers, both with Ubuntu images on and bash running, are running. The two containers are bound to the `docker0` bridge device via `veth` interfaces.
+
+<figure>
+<p align="center">
+  <img src="assets/veth.png" alt="veth to docker0" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+- The running shell on one of the container's PID is 4899. Comparing contents of `/proc/[pid]/net/route`, `/proc/[pid]/net/socketstat` and `/proc/ns` files of processes in different namespaces shows that the process in a container, in a separate network namespace, owns its isolated network interfaces.
+
+<figure>
+<p align="center">
+  <img src="assets/net_ns_two.png" alt="namespace comparison" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+<figure>
+<p align="center">
+  <img src="assets/net_ns.png" alt="network namespace difference demonstration" style="width: 72%; height: 72%;">
+</p>
+</figure>
 
 ### Mount Namespace
 
 ### PID Namespace
+
+- PID namespaces isolate the process ID number space. Using the pid namespaces, containers can suspend/resume the set of processes and maintain the same PIDs after migrating into a new host since processes in different namespaces can have the same PID.
+- PID 1 is allocated to the first process, so called the "init" process, created in a new namespace.
+
+  - If the "init" process is terminated, all of the processes in the namespace receive `SIGKILL` and are terminated. Unless the "init" process is alive, a new process cannot be created in the namespace.
+  - Only the signals that the "init" process handles can be sent from its chilren or processes in ancestor namespaces to the process. This limitation was set to prevent accidentally killing the "init" process. `SIGKILL` and `SIGSTOP` are exceptions when they are sent from ancestor namespaces. See the example below.
+
+  <figure>
+  <p align="center">
+    <img src="assets/pid_ns_signal.png" alt="pid namespace signal example" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  - Following is the source code of `pid_ns_test` executable
+
+    ```C
+    #include <unistd.h>
+    #include <signal.h>
+    #include <stdlib.h>
+    #include <sys/types.h>
+    #include <sys/wait.h>
+    #include <stdio.h>
+
+    void    handler(int signal) {
+        if (signal == SIGINT)
+            printf("SIGINT RECEIVED\n");
+        else if (signal == SIGQUIT)
+            printf("SIGQUIT RECEIVED\n");
+    }
+
+    int main(int argc, char **argv, char **envp) {
+        if (argc == 1) {
+            write(STDERR_FILENO, "Wrong args\n", 11);
+            return 1;
+        }
+        if (sethostname("test", 4) == -1)
+            write(STDERR_FILENO, "Failed to set hostname\n", 23);
+        printf("init process PID : %d\n", getpid());
+        signal(SIGINT, handler);
+        signal(SIGQUIT, handler);
+        char **args = calloc(2, sizeof(char *));
+        args[0] = argv[1];
+        pid_t pid = fork();
+        if (!pid && execve(argv[1], args, envp) == -1) {
+            write(STDERR_FILENO, "Failed to execute shell\n", 24);
+            return 1;
+        }
+        waitpid(pid, NULL, 0);
+        return 0;
+    }
+    ```
+
+- PID namespaces can be nested, thus form a tree.
 
 ### Time Namespace
 
 ### User Namespace
 
 ### UTS Namespace
+
+- UTS namespace isolates the hostname and the NIS domain name. Changes to these identifiers are visible only to the processes in the same namespace.
+- In the example below, via `nsenter` wrapper the shell outside a docker container enters the UTS namespace of the container.
+
+<figure>
+<p align="center">
+  <img src="assets/uts_example.png" alt="entering uts namespace example" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+### `nsenter`
 
 ## `chroot`
 
