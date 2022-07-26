@@ -258,7 +258,7 @@ System administration by using Docker containers
     }
     ```
 
-- PID namespaces can be nested, thus form a tree.
+- PID namespaces can be nested, thus form a tree. A
 
 ### Time Namespace
 
