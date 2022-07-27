@@ -258,7 +258,27 @@ System administration by using Docker containers
     }
     ```
 
-- PID namespaces can be nested, thus form a tree. A
+- PID namespaces can be nested, thus form a tree. Each PID namespace has a parent namespace, except for the very first PID namespace.
+
+  - A process is visible to other processes in its PID namespace and ancestor namespaces. But a process in a child namespace cannot see processes in its ancestor namespaces.
+  - `getpid` returns PID associated with the namespace in which the function was called.
+  - Processes may freely descend into a child PID namespace, but they cannot ascend to ancestor namespaces.
+  - The example below shows nested structure of PID namespaces. The processes in the child namespace are visible, although are identified by different PIDs in different namespaces, by the processes in its own namespace and the ancestor namespace. (Top : a pid namespace created by unshare; Bottom : a pid namespace created by a docker container)
+
+  <figure>
+  <p align="center">
+    <img src="assets/pidtree_first.png" alt="pidtree example" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  <figure>
+  <p align="center">
+    <img src="assets/pidtree_second.png" alt="pidtree example two" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+- Orphaned children are adopted to the "init" process of the PID namespace.
+- `/proc` filesystem only shows processes in the PID namespace of the process that perfomed the mount. Therefore it is necessary to mount a new `procfs` at `/proc` in the new namespace in order to use `ps` correctly and see `/proc` files regarding the processes in the namespace.
 
 ### Time Namespace
 
