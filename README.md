@@ -282,6 +282,18 @@ System administration by using Docker containers
 
 ### Time Namespace
 
+- Time namespaces virtualize the values of `CLOCK_MONOTONIC` and `CLOCK_BOOTTIME`.
+  - `CLOCK_MONOTONIC` : represents time in seconds since the system was booted (in Linux), excluding intervals for while the system was suspended.
+  - `CLOCK_BOOTTIME` : identical to `CLOCK_MONOTONIC`, but it includes suspended intervals as well.
+- The created namespace does not put the calling process in the namespace, but the subsequently created children of the calling processs.
+- Note that docker containers share the same time namespace as the host. PID 3758 is of a bash shell inside a container.
+
+<figure>
+  <p align="center">
+    <img src="assets/time_ns.png" alt="docker container does not set its own time ns" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
 ### User Namespace
 
 ### UTS Namespace
