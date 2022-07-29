@@ -73,7 +73,7 @@ System administration by using Docker containers
 
 ### Cgroup Namespace
 
-- Each cgroup namespace has its root cgroup directory. A cgroup namespace makes the process to view its current cgroup directory as the root cgroup directory of the namespace. This virtualization of the process' view on its cgroup hierarchy can be seen in `/proc/[pid]/cgroup` and `/proc/[pid]/mountinfo`. Below is the example. The top shell shows how the `bash` process in a separate cgroup namespace recognizes its cgroup as the root. The bottom shell shows how the isolated shell's cgroup is seen in the original cgroup namespace.
+- Each cgroup namespace has its root cgroup directory. A cgroup namespace makes the process to view its current cgroup directory as the root cgroup directory of the namespace. This virtualization of the process's view on its cgroup hierarchy can be seen in `/proc/[pid]/cgroup` and `/proc/[pid]/mountinfo`. Below is the example. The top shell shows how the `bash` process in a separate cgroup namespace recognizes its cgroup as the root. The bottom shell shows how the isolated shell's cgroup is seen in the original cgroup namespace.
 
 <figure>
 <p align="center">
@@ -295,6 +295,112 @@ System administration by using Docker containers
   </figure>
 
 ### User Namespace
+
+- User namespaces isolate security-related identifiers and attributes: [user IDs, group IDs](https://man7.org/linux/man-pages/man7/credentials.7.html), the root directory, [keys](https://man7.org/linux/man-pages/man7/keyrings.7.html), and [capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html).
+- User and group IDs of a process may be different inside and outside a user namespace. In the example below (process, user, mount namespaces are created), an UID (GID) `1000` in the outer namespace is mapped to a privileged UID (GID) `0` in the inner namespace. The normal user outside is regarded as the root, privileged, user inside. But the privileges are limited to opertions on resources inside the namespace. Note that even though the username is read `root`, the user cannot access `/root` which belongs to the outer namespace.
+
+  <figure>
+  <p align="center">
+    <img src="assets/user_ns.png" alt="user namespace example output" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  ```C
+  // source code for `user_ns` binary
+  #define _GNU_SOURCE
+  #include <errno.h>
+  #include <fcntl.h>
+  #include <sched.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/mman.h>
+  #include <sys/mount.h>
+  #include <sys/wait.h>
+  #include <unistd.h>
+
+  #define STACK_SIZE (1024 * 1024)
+
+  void err_exit(char *errmsg) {
+    if (errmsg) {
+      write(STDERR_FILENO, errmsg, strlen(errmsg));
+      write(STDERR_FILENO, "\n", 1);
+    }
+    exit(EXIT_FAILURE);
+  }
+
+  int child_fn(void *arg) {
+    char *args[2];
+    char path[20];
+    int fd;
+
+    if (mount("proc", "/proc", "proc", 0, "") == -1) err_exit("mount error");
+    bzero(path, 20);
+    sprintf(path, "/proc/%d/uid_map", getpid());
+    fd = open(path, O_RDWR);
+    if (fd < 0) err_exit("open error");
+    if (write(fd, "0 1000 1\n", 14) != 14) err_exit("uid write error");
+    close(fd);
+    bzero(path, 20);
+    sprintf(path, "/proc/%d/setgroups", getpid());
+    fd = open(path, O_RDWR);
+    if (fd < 0) err_exit("open error");
+    if (write(fd, "deny\n", 5) != 5) err_exit("setgroups write error");
+    close(fd);
+    bzero(path, 20);
+    sprintf(path, "/proc/%d/gid_map", getpid());
+    fd = open(path, O_RDWR);
+    if (fd < 0) err_exit("open error");
+    if (write(fd, "0 1000 1\n", 14) != 14) err_exit("gid write error");
+    close(fd);
+    args[0] = "/bin/bash";
+    args[1] = NULL;
+    if (execvp("/bin/bash", args) == -1) err_exit("exec error");
+    return EXIT_SUCCESS;
+  }
+
+  int main(void) {
+    char *stack;
+    char *stack_top;
+    pid_t child_pid;
+
+    stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
+                MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, -1, 0);
+    if (stack == MAP_FAILED) err_exit("mmap error");
+    stack_top = stack + STACK_SIZE;
+    child_pid = clone(child_fn, stack_top,
+                      CLONE_NEWUSER | CLONE_NEWPID | CLONE_NEWNS | SIGCHLD, NULL);
+    if (child_pid == -1) err_exit("clone error");
+    if (waitpid(child_pid, NULL, 0) == -1) err_exit("waitpid error");
+    printf("child has terminated\n");
+    return EXIT_SUCCESS;
+  }
+  ```
+
+- User namespaces can be nested. Each process belongs to exactly one user namespace.
+- Unprivileged processes can create user namespaces while other namespaces can only be created by processes with `CAP_SYS_ADMIN`. When `CLONE_NEWUSER` is specified along with other `CLONE_NEW*` flags when calling `clone` or `unshare`, a new user namespace is guaranteed to be created first, so that even unprivileged processes can create combinations of namespaces.
+- The child process created by `clone` with the `CLONE_NEWUSER` flag, `unshare`, or `setns` (entering existing user namespace) are given a complete set of capabilites in the new user namespace. However, even if the new namespace is created by the root, the process has no capabilities in outer namespaces. Note that calling `execve` causes recalculation of a process's capabilites as described in the [man page on capabilites](https://man7.org/linux/man-pages/man7/capabilities.7.html).
+
+  - In the example below, the `bash` shell process in the new namespace is given the full set of capabilites. Note that the process that called `clone` is owned by an unprivileged user `1000` in the outer namespace.
+
+  <figure>
+  <p align="center">
+    <img src="assets/user_ns_caps.png" alt="full capabilities in a new user namespace" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+- Only the "initial" user namespace can perform operations on resources that are not associated with any namespace, such as changing the system time, loading a kernel module, and creating a device etc. If the process in a new user namespace owns its PID namespace, it can mount `/proc` filesystems.
+- When a user namespace is created, UID nor GID are mapped as shown in the image below. By writing 1-to-1 mapping of UIDs on `/proc/[pid]/uid_map` and GIDs on `/proc/[pid]/gid_map`, following the format and the rules specified on the man page, the process in the new namespace can be mapped to a user in the outer namespace.
+  - Note that these files can be written only once.
+  - Before writing gid mapping on a `.../gid_map` file, "deny" must be written on the target process's `/proc/[pid]/setgroups` file.
+
+<figure>
+<p align="center">
+  <img src="assets/user_ns_no_initial_mapping.png" alt="uid and gid are not mapped initially when user namespace is created" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+- File access permissions are determined depending on the process credentials and the file credentials of the initial user namespace.
 
 ### UTS Namespace
 
