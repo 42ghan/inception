@@ -205,6 +205,35 @@ System administration by using Docker containers
 
 ### Mount Namespace
 
+- Mount namespaces isolates the list of mounts seen by the processes in each namespace. Therefore, the processes in each namespace will see distinct directory hierarchies. The distinct view can be seen in `/proc/[pid]/mounts`, `/proc/[pid]/mountinfo`, and `/proc/[pid]/mountstats` files.. All processes in the same mount namespace see the same view in these files.
+- Mount namespaces are created by using `clone` ore `unshare` with `CLONE_NEWNS` flag.
+  - if `clone`, the child namespace's mount list is a copy of the parent process's mount list.
+  - else if `unshare`, the child namespace's mount list is a copy of the caller's mount list.
+- By default, modifications on mount lists of either the parent namespace or the child namespace do not affect each other. But, after the implementaion of mount namespaces, some cases where the complete isolation were too great were found. For example, a mount operation was required in each namespace in order to make a newly loaded optical drive visible to all namespaces.
+- In order to minimize repetitive mounting for the complete isolation issue, the shared subtree feature was introduced. This feature allows "automatic, controlled propagation of mount and unmount events between namespaces." ([`mount namespaces` man page](https://man7.org/linux/man-pages/man7/mount_namespaces.7.html)) Each mount is marked with one of the following propagation types (per-mount-point setting):
+  - `MS_SHARED` : events propagate to members of a peer group; conversely, events under peer mounts propagate to this mount.
+  - `MS_PRIVATE` : no peer group, no propagation.
+  - `MS_SLAVE` : propagate into this mount from a shared peer group; events under this mount do not propagate to any peer. This type is useful when it is needed to make events from the master peer group to propagate to the slave mount, while preventing propagations in reverse direction.
+  - `MS_UNBINDABLE` : like a private mount, also can't be bind mount.
+    - This type exists in order to avoid "mount explosion" problem when performing bind mounts of a higher-level subtree at a lower-level mount. For further details, see [MS_UNBIND example section of man page](https://man7.org/linux/man-pages/man7/mount_namespaces.7.html).
+- A member is added to the mount "peer group" in which the existing mount is when:
+  - the mount is marked as shared;
+  - the mount is copied during the creation of a new namespace;
+  - a new bind mount.'
+- The propagation type of each mount can be checked via the "optional fields" in `/proc/[pid]/mountinfo`.
+  - `shared:X` for shared mount in peer group X.
+  - `master:X` for a slave mount to shared peer group X.
+  - `propagate_from:X` for a slave and receiveds propagtion from shared peer group X when the process cannot see the save's immediate master.
+  - `unbindable`
+  - No tags mean private mounts.
+- Below is an example of how propagations occur between different mount namespaces depending on different mount propagation types (shared & private).
+
+<figure>
+<p align="center">
+  <img src="assets/mnt_ns_example.png" alt="mount namespace shared and private example" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
 ### PID Namespace
 
 - PID namespaces isolate the process ID number space. Using the pid namespaces, containers can suspend/resume the set of processes and maintain the same PIDs after migrating into a new host since processes in different namespaces can have the same PID.
