@@ -442,9 +442,140 @@ System administration by using Docker containers
 </p>
 </figure>
 
-### `nsenter`
+## `chroot` & `pivot_root`
 
-## `chroot`
+- Along with namespaces, changing root directory by `chroot` or `pivot_root` are used in order to create isolated environments for containers.
+- `chroot` is a system call that changes the root directory(`/`) of the calling process to the given path. A privileged process with `CAP_SYS_CHROOT` can call `chroot`.
+
+  ```C
+  // C prototype
+  #include <unistd.h>
+  int chroot(const char *path);
+
+  // User command
+  // if no command specified, /bin/bash is called by default
+  chroot [OPTION] NEWROOT [COMMAND [ARG]...]
+  chroot OPTION
+  ```
+
+  - All children of the calling process share the same root directory.
+  - `chroot` is not intended to be used for security purpose since it cannot completely sandbox the process. It only changes the pathname of the root directory from the calling process's point of view.
+  - The "jail" created by `chroot` can easily escaped by just moving directories and then opening paths outside the root.
+
+  <figure>
+  <p align="center">
+    <img src="assets/chroot_break.png" alt="breaking chroot jail" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  - As shown in the example above and below, a process's root directory can be checked in the symbolic link `/proc/[pid]/root`. Each process has a different root path, first the initial root, second the `chroot`ed process, third the shell inside a docker container.
+
+  <figure>
+  <p align="center">
+    <img src="assets/proc_root.png" alt="different proc root directories" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  - Note that the executable for the command which will be executed after `chroot` and its dependencies must be present in the `new_root` directory prior to `chroot` call.
+
+- On the other hand, the system call `pivot_root` not only changes the root directory, but also changes the root mount in the mount namespace of the calling process. (It moves the original root mount to the directory `put_old` and makes the `new_root` the new root mount). It requires `CAP_SYS_ADMIN` capability in the user namespace that owns the caller's mount namespace.
+
+  ```C
+  // C prototype
+  #include <sys/syscall.h>      /* Definition of SYS_* constants */
+  #include <unistd.h>
+  int syscall(SYS_pivot_root, const char *new_root, const char *put_old);
+
+  // User command
+  pivot_root new_root put_old
+  ```
+
+  - Restrictions are:
+    - `new_root` and `put_old` must be directories.
+    - `new_root` and `put_old` must not be on the same mount as the current root.
+    - `put_old` must be a sub directory of `new_root`. Therefore, the old rootfs can be unmounted after pivoting by calling `umount put_old`.
+    - `new_root` must be a path to a mount point. By using bind mount, a normal directory can turn into a mount point.
+    - The current root directory must be a mount point.
+    - The propagation type of the parent mount of `new_root` and the parent mount of the current root directory must not be `MS_SHARED`. Unless, pivoting may affect other mount namespaces.
+  - Following code and photograph is an example of `pivot_root`.
+
+  <figure>
+  <p align="center">
+    <img src="assets/pivot_root_example.png" alt="pivot root example" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  ```C
+  #define _GNU_SOURCE
+  #include <sched.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <sys/wait.h>
+  #include <sys/syscall.h>
+  #include <sys/mount.h>
+  #include <sys/stat.h>
+  #include <limits.h>
+  #include <sys/mman.h>
+  #include <string.h>
+
+  #define STACK_SIZE (1024 * 1024)
+
+  void error_exit(char *err_msg) {
+    perror(err_msg);
+    exit(EXIT_FAILURE);
+  }
+
+  static int child(void *arg) {
+    char **args = arg;
+    char *new_root = args[0];
+    char path[PATH_MAX];
+
+    if (mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL) == -1)
+      error_exit("mount private");
+    if (mount(new_root, new_root, NULL, MS_BIND, NULL) == -1)
+      error_exit("mount bind");
+    bzero(path, PATH_MAX);
+    snprintf(path, sizeof(path), "%s/%s", new_root, "oldroot");
+    printf("path : %s\n", path);
+    if (mkdir(path, 0777) == -1)
+      error_exit("mkdir");
+    if (syscall(SYS_pivot_root, new_root, path) == -1)
+      error_exit("pivot_root");
+    if (chdir("/") == -1)
+      error_exit("chdir");
+    if (umount2("/oldroot", MNT_DETACH) == -1)
+      error_exit("umount2");
+    if (rmdir("/oldroot") == -1)
+      error_exit("rmdir");
+    printf("%s\n", args[1]);
+    execv(args[1], &args[1]);
+    error_exit("execv");
+  }
+
+  int main(int argc, char *argv[]) {
+    char *stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
+                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, -1, 0);
+    if (stack == MAP_FAILED)
+      error_exit("mmap");
+    // CREATE CHILD PROCESS IN A NEW MOUNT NAMESPACE
+    if (clone(child, stack + STACK_SIZE, CLONE_NEWNS | CLONE_NEWPID | SIGCHLD, &argv[1]) == -1)
+      error_exit("clone");
+    if (wait(NULL) == -1)
+      error_exit("wait");
+    return EXIT_SUCCESS;
+  }
+  ```
+
+  - Since the new root is mounted inside a new mount namespace, `pivot_root` provides much secure isolation than `chroot`. `pivot_root` jail cannot be easily escaped like the `chroot` jail.
+
+  <figure>
+  <p align="center">
+    <img src="assets/pivot_root_jail.png" alt="pivot root jail escape failure" style="width: 72%; height: 72%;">
+  </p>
+  </figure>
+
+  - Another usage of `pivot_root` other than isolating containers is during system startup, when the system switches initially mounted temporary root filesystem to the real root filesystem.
 
 # Docker
 
