@@ -577,7 +577,69 @@ System administration by using Docker containers
 
   - Another usage of `pivot_root` other than isolating containers is during system startup, when the system switches initially mounted temporary root filesystem to the real root filesystem.
 
+## Container Engine
+
+- Contanerization, isolation of a group of processes, can be achieved via applying the concepts and utilizing Linux kernel APIs explained above.
+- There are software products, so called "Container Engines" such as Docker, CRI-O, Railcar, RKT, LXC, and etc., which provide ways in which users can create and run containers easily via CLI.
+- Most of these engines follow the standard set by the [Open Container Initiative](https://opencontainers.org/), a project backed by the Linux Foundation, which aims at "creating open industry standards around container formats and runtimes. Currently, the OCI governs standards for:
+  - Container Image - [image format specification](https://github.com/opencontainers/image-spec).
+  - Container Runtime - [container runtime specification](https://github.com/opencontainers/runtime-spec/blob/master/README.md) & [reference runtime implementation, `runc`](https://github.com/opencontainers/runc).
+- Containers can be in two different states:
+  - at rest - a container is a set of files. (container image)
+  - running - a container is a group of processes. (running container)
+- The engine's role is to unpack container image, pass metadata and files to the Linux kernel to create an isolated group of running processes, a container, as per the configuration on the images. In more details, the container engine is responsible for:
+  - Handling user input (e.g. `docker [command]`)
+  - Handling input via APIs from a "Container Orchestrator" such as Kubernetes
+  - Pulling the container images from the registry server
+  - Expanding the container image on disk using a graph driver (e.g. overlay2, devicemapper)
+  - Preparing a container mount point
+  - Prepare the metadata and call the container runtime to start the container.
+
+### Container Image
+
+- A container image is a file that is used as a mount point when starting containers.
+- Images may be created locally. Or with help of a container engine, images may be pulled down from a registry server (a file server that stores container repositories, e.g. docker.io).
+- LXD uses a single container image, while docker and RKT use multi-layered OCI-based images.
+- A container repository is a directory which contains multiple container image layers and metadata about the layers.
+- Image layers are connected in a parent-child relationship. Each image layer represents diff between itself and the parent layer. Each directive in a Dockerfile creates a new layer.
+- In the example below, multiple layers per directive on the Dockerfile are created, a container based on a parent image can be created, and the images are in parent-child relationships.
+
+<figure>
+<p align="center">
+  <img src="assets/image_relationship.png" alt="parent child relationship between multi-layered container images" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+### Container Runtime
+
+- A container runtime prepares the isolated environments for a container by:
+
+  - consuming the mount point and metadata provided by the container engine,
+  - setting up cgroups, SELinux Policy & AppArmor rules,
+  - `clone` system call to start containerized processes.
+
+- So, the container runtime is essentially the parent process of the first process inside a container.
+- Container engines use a container runtime as a component. The OCI runtime standard reference implementation, [`runc`](https://github.com/opencontainers/runc), is most widely used. Docker relies on `runc`. There are other implementations such as [`crun`](https://github.com/giuseppe/crun), [`railcar`](https://github.com/oracle/railcar), and [`katacontainers`](https://katacontainers.io/).
+  - Docker initially relied on `LXC`. Later on, they developed their own library called libcontainer in Golang. After the OCI was created, Docker donated the libcontainer and it was grown up into `runc`.
+- In the example below, during the containerization process, `runc` is executed.
+
+<figure>
+<p align="center">
+  <img src="assets/docker_runc.png" alt="docker runc" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
+- As shown in the next example, `runc` can be used directly by the user as a standalone process to run a container. `runc` requires a mountpoint and meta-data (config.json).
+
+<figure>
+<p align="center">
+  <img src="assets/runc_standalone.png" alt="runc standalone" style="width: 72%; height: 72%;">
+</p>
+</figure>
+
 # Docker
+
+## Docker Engine Structure
 
 # References
 
@@ -590,3 +652,8 @@ System administration by using Docker containers
 ## Docker & Containers
 
 - [Grunert, S. (2019). Demystifying Containers - Part I: Kernel Space. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504)
+- [Grunert, S. (2019). Demystifying Containers - Part II: Container Runtimes. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-ii-container-runtimes-e363aa378f25)
+- [Grunert, S. (2019). Demystifying Containers — Part III: Container Images. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-iii-container-images-244865de6fef)
+- [Red Hat Developer. (2018). A Practical Introduction to Container Terminology. [online]](https://www.mybib.com/tools/harvard-referencing-generator)
+- [crosbymichael (2016). dockercon-2016/Creating Containerd.pdf at master · crosbymichael/dockercon-2016. [online] GitHub.](https://github.com/crosbymichael/dockercon-2016/blob/master/Creating%20Containerd.pdf)
+- [Stack Overflow. (n.d.). docker - How containerd compares to runc. [online]](https://stackoverflow.com/questions/41645665/how-containerd-compares-to-runc)
