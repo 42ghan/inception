@@ -51,6 +51,9 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 # bridge utils 설치
 apt-get install bridge-utils -y
 
+# net-tools 설치
+apt-get install net-tools -y
+
 exec bash
 
 clear
