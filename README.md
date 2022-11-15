@@ -34,7 +34,7 @@ System administration by using Docker containers
 
 # Linux (Debian & Alpine)
 
-## Debian (VM Set-up)
+## VM Set-up
 - Execute [the setup script](./vm_setup.sh).
 
 - How to support secondary language (Korean)
@@ -56,7 +56,28 @@ System administration by using Docker containers
 
 - [How to install Docker Engine on a linux machine](https://docs.docker.com/engine/install/ubuntu/) (follow the instruction on the link)
 
-## Alpine vs. Debian on Containers
+## Alpine vs. Debian or Else on Containers
+
+### Base Image vs. Distroless
+- Container images can be built either by using a base image of a Linux distribution, or building from scratch (called distroless container images).
+- Even though the distroless images take much less storage space and provide access to the latest packages, freedom to customize comes with responsiblity. The developer will need to update libraries, fix security vulnerabilities on his own. Updating dependencies and libraries may lead to frequent incompatibility issues in code which  ultimately may countervail improvement in efficiency achieved by small storage space.
+- On the other hand, by using a base image, developers can save their time and focus on an application running in a container by relying on efforts of Linux maintainers. Downside is that the final image becomes larger due to all sorts of dependencies, compared to distroless images.
+
+### Choosing the Best Base Image
+- Each Linux distribution has a different set of Pros and Cons. Alpine offers the smallest size, but uses less popular libc, muslc. RedHat stream OSs offer the best security and support, but is relatively large in size. These differences are explained in details in [this article](https://crunchtools.com/comparison-linux-container-images/).
+- Although it is important, bare size cannot be the only measure for choosing the base image. Some argue that having less dependencies, in case of Alpine Linux, expose less attack surface, and therefore offers better security. The others, the RedHat stream, argue that assessment must be made [on the whole eco-system scale](https://www.redhat.com/en/blog/container-tidbits-can-good-supply-chain-hygiene-mitigate-base-image-sizes), and disadvantages in size can be mitigated by build caches.
+
+### Alpine Linux
+- For this project, Alpine and Debian are given as options, and Alpine was chosen for following reasons:
+  - Alpine is much lighter than Debian. (busybox instead of GNU Core Utils, musl libc instead of glibc)
+    <figure>
+      <p align="center">
+        <img src="assets/linux/debian_alpine_size.png" alt="size difference between debian and alpine based images" style="width: 80%; height: 80%; ">
+      </p>
+    </figure>
+  - Alpine's package manager `apk` automatically cleans up packages while debian requires an additional command (`apt-get clean`) to be executed.
+  - Alpine is more intriguing.
+  - Alpine exposes less attack surface.
 
 # Container Basics
 
@@ -91,7 +112,7 @@ System administration by using Docker containers
 - Namespaces of each process can be checked inside the `/proc/[pid]/ns/` directory.
 <figure>
 <p align="center">
-  <img src="assets/namespaces.png" alt="checking process's namespace" style="width: 80%; height: 80%; ">
+  <img src="assets/basic/namespaces.png" alt="checking process's namespace" style="width: 80%; height: 80%; ">
 </p>
 </figure>
 
@@ -103,7 +124,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_namespace.png" alt="cgroup namespace example" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/cgroup_namespace.png" alt="cgroup namespace example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -120,7 +141,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroupfs.png" alt="cgroupfs ls" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/cgroupfs.png" alt="cgroupfs ls" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -128,7 +149,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/new_cgroup.png" alt="new cgroup example" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/new_cgroup.png" alt="new cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -136,7 +157,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/moving_cgroup.png" alt="moving cgroup example" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/moving_cgroup.png" alt="moving cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -144,7 +165,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_limits.png" alt="cgroup limits example" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/cgroup_limits.png" alt="cgroup limits example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -152,7 +173,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_controllers.png" alt="cgroup controllers" style="width: 72%; height: 72%; ">
+  <img src="assets/basic/cgroup_controllers.png" alt="cgroup controllers" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -173,7 +194,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%;">
+  <img src="assets/basic/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%;">
 </p>
 </figure>
 
@@ -211,7 +232,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/veth.png" alt="veth to docker0" style="width: 72%; height: 72%;">
+  <img src="assets/basic/veth.png" alt="veth to docker0" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -219,13 +240,13 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/net_ns_two.png" alt="namespace comparison" style="width: 72%; height: 72%;">
+  <img src="assets/basic/net_ns_two.png" alt="namespace comparison" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
 <figure>
 <p align="center">
-  <img src="assets/net_ns.png" alt="network namespace difference demonstration" style="width: 72%; height: 72%;">
+  <img src="assets/basic/net_ns.png" alt="network namespace difference demonstration" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -256,7 +277,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/mnt_ns_example.png" alt="mount namespace shared and private example" style="width: 72%; height: 72%;">
+  <img src="assets/basic/mnt_ns_example.png" alt="mount namespace shared and private example" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -270,7 +291,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/pid_ns_signal.png" alt="pid namespace signal example" style="width: 72%; height: 72%;">
+    <img src="assets/basic/pid_ns_signal.png" alt="pid namespace signal example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -322,13 +343,13 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/pidtree_first.png" alt="pidtree example" style="width: 72%; height: 72%;">
+    <img src="assets/basic/pidtree_first.png" alt="pidtree example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
   <figure>
   <p align="center">
-    <img src="assets/pidtree_second.png" alt="pidtree example two" style="width: 72%; height: 72%;">
+    <img src="assets/basic/pidtree_second.png" alt="pidtree example two" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -345,7 +366,7 @@ System administration by using Docker containers
 
 <figure>
   <p align="center">
-    <img src="assets/time_ns.png" alt="docker container does not set its own time ns" style="width: 72%; height: 72%;">
+    <img src="assets/basic/time_ns.png" alt="docker container does not set its own time ns" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -356,7 +377,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/user_ns.png" alt="user namespace example output" style="width: 72%; height: 72%;">
+    <img src="assets/basic/user_ns.png" alt="user namespace example output" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -440,7 +461,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/user_ns_caps.png" alt="full capabilities in a new user namespace" style="width: 72%; height: 72%;">
+    <img src="assets/basic/user_ns_caps.png" alt="full capabilities in a new user namespace" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -451,7 +472,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/user_ns_no_initial_mapping.png" alt="uid and gid are not mapped initially when user namespace is created" style="width: 72%; height: 72%;">
+  <img src="assets/basic/user_ns_no_initial_mapping.png" alt="uid and gid are not mapped initially when user namespace is created" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -464,7 +485,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/uts_example.png" alt="entering uts namespace example" style="width: 72%; height: 72%;">
+  <img src="assets/basic/uts_example.png" alt="entering uts namespace example" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -490,7 +511,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/chroot_break.png" alt="breaking chroot jail" style="width: 72%; height: 72%;">
+    <img src="assets/basic/chroot_break.png" alt="breaking chroot jail" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -498,7 +519,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/proc_root.png" alt="different proc root directories" style="width: 72%; height: 72%;">
+    <img src="assets/basic/proc_root.png" alt="different proc root directories" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -527,7 +548,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/pivot_root_example.png" alt="pivot root example" style="width: 72%; height: 72%;">
+    <img src="assets/basic/pivot_root_example.png" alt="pivot root example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -597,7 +618,7 @@ System administration by using Docker containers
 
   <figure>
   <p align="center">
-    <img src="assets/pivot_root_jail.png" alt="pivot root jail escape failure" style="width: 72%; height: 72%;">
+    <img src="assets/basic/pivot_root_jail.png" alt="pivot root jail escape failure" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -632,7 +653,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/image_relationship.png" alt="parent child relationship between multi-layered container images" style="width: 72%; height: 72%;">
+  <img src="assets/basic/image_relationship.png" alt="parent child relationship between multi-layered container images" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -651,7 +672,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/docker_runc.png" alt="docker runc" style="width: 72%; height: 72%;">
+  <img src="assets/basic/docker_runc.png" alt="docker runc" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -659,7 +680,7 @@ System administration by using Docker containers
 
 <figure>
 <p align="center">
-  <img src="assets/runc_standalone.png" alt="runc standalone" style="width: 72%; height: 72%;">
+  <img src="assets/basic/runc_standalone.png" alt="runc standalone" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -677,12 +698,18 @@ System administration by using Docker containers
 - [Debian changing language](https://wiki.debian.org/ChangeLanguage)
 - [Debian locale setting](https://wiki.debian.org/Locale)
 - [Linux man pages online](https://man7.org/linux/man-pages/index.html)
+- [Janetakis, N. (2018). Benchmarking Debian vs Alpine as a Base Docker Image. [online]](https://nickjanetakis.com/blog/benchmarking-debian-vs-alpine-as-a-base-docker-image)
+- [Janetakis, N. (2017). The 3 Biggest Wins When Using Alpine as a Base Docker Image. [online]](https://nickjanetakis.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image)
+- [crunchtools.com. (n.d.). A Comparison of Linux Container Images. [online]](https://crunchtools.com/comparison-linux-container-images/)
+- [www.redhat.com. (n.d.). Container Tidbits: Can Good Supply Chain Hygiene Mitigate Base Image Sizes? [online]](https://www.redhat.com/en/blog/container-tidbits-can-good-supply-chain-hygiene-mitigate-base-image-sizes)
+- [opensource.com. (n.d.). Do Linux distributions still matter with containers? | Opensource.com. [online]](https://opensource.com/article/19/2/linux-distributions-still-matter-containers)
+- [wiki.alpinelinux.org. (n.d.). Comparison with other distros - Alpine Linux. [online]](https://wiki.alpinelinux.org/wiki/Comparison_with_other_distros)
 
 ## Docker & Containers
 
 - [Grunert, S. (2019). Demystifying Containers - Part I: Kernel Space. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504)
 - [Grunert, S. (2019). Demystifying Containers - Part II: Container Runtimes. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-ii-container-runtimes-e363aa378f25)
 - [Grunert, S. (2019). Demystifying Containers — Part III: Container Images. [online] Medium.](https://medium.com/@saschagrunert/demystifying-containers-part-iii-container-images-244865de6fef)
-- [Red Hat Developer. (2018). A Practical Introduction to Container Terminology. [online]](https://www.mybib.com/tools/harvard-referencing-generator)
+- [Red Hat Developer. (2018). A Practical Introduction to Container Terminology. [online]](https://developers.redhat.com/blog/2018/02/22/container-terminology-practical-introduction)
 - [crosbymichael (2016). dockercon-2016/Creating Containerd.pdf at master · crosbymichael/dockercon-2016. [online] GitHub.](https://github.com/crosbymichael/dockercon-2016/blob/master/Creating%20Containerd.pdf)
 - [Stack Overflow. (n.d.). docker - How containerd compares to runc. [online]](https://stackoverflow.com/questions/41645665/how-containerd-compares-to-runc)
