@@ -1,5 +1,11 @@
 #! /usr/bin/env bash
 
+ARCH="arm64"
+if [[ `uname -m` == "x86_64" ]];
+then
+    ARCH="amd64"
+fi
+
 apt-get update
 
 # vim 설치 및 설정
@@ -22,7 +28,7 @@ apt install manpages-dev -y
 apt install gcc -y
 
 # pidtree 설치
-curl -LO https://go.dev/dl/go1.19.3.linux-arm64.tar.gz && tar -C /usr/local -xzf /root/go1.19.3.linux-arm64.tar.gz
+curl -LO https://go.dev/dl/go1.19.3.linux-${ARCH}.tar.gz && tar -C /usr/local -xzf /root/go1.19.3.linux-${ARCH}.tar.gz
 
 export PATH=$PATH:/usr/local/go/bin
 
@@ -30,7 +36,7 @@ apt-get install make -y
 
 git clone https://github.com/thediveo/lxkns.git && make install -C lxkns
 
-rm -rf go1.19.3.linux-arm64.tar.gz lxkns
+rm -rf go1.19.3.linux-${ARCH}.tar.gz lxkns
 
 # docker 설치
 apt-get install \
