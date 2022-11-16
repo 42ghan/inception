@@ -686,7 +686,25 @@ System administration by using Docker containers
 
 # Docker
 
+## Basic Concepts
+
 ## Docker Engine Structure
+
+## Building Docker Images
+
+### Dockerfile
+
+## Volume
+
+## Network
+
+# Services
+
+## MariaDB
+- https://mariadb.com/kb/en/configuring-mariadb-with-option-files/
+- https://wiki.alpinelinux.org/wiki/MariaDB
+- https://mariadb.com/kb/en/running-mysqld-as-root/
+
 
 # References
 
@@ -698,6 +716,7 @@ System administration by using Docker containers
 - [Debian changing language](https://wiki.debian.org/ChangeLanguage)
 - [Debian locale setting](https://wiki.debian.org/Locale)
 - [Linux man pages online](https://man7.org/linux/man-pages/index.html)
+- [Alpine Package Keeper Wiki](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper)
 - [Janetakis, N. (2018). Benchmarking Debian vs Alpine as a Base Docker Image. [online]](https://nickjanetakis.com/blog/benchmarking-debian-vs-alpine-as-a-base-docker-image)
 - [Janetakis, N. (2017). The 3 Biggest Wins When Using Alpine as a Base Docker Image. [online]](https://nickjanetakis.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image)
 - [crunchtools.com. (n.d.). A Comparison of Linux Container Images. [online]](https://crunchtools.com/comparison-linux-container-images/)
