@@ -6,14 +6,10 @@ then
     ARCH="amd64"
 fi
 
-apt-get update
-
 # vim 설치 및 설정
-apt-get install vim -y && echo -e "set nu\nsyntax on\nset mouse=a\nset shiftwidth=4\nset tabstop=4" > /root/.vimrc
-
-# ssh permit root login
-# sed -i 's/.*PermitRootLogin prohibit-password.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-# service ssh restart
+apt-get update \
+&& apt-get install vim -y \
+&& echo -e "set nu\nsyntax on\nset mouse=a\nset shiftwidth=4\nset tabstop=4" > /root/.vimrc
 
 # git & curl 설치
 apt-get install git curl -y
@@ -22,10 +18,10 @@ apt-get install git curl -y
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 
 # man page 설치
-apt install manpages-dev -y
+apt-get install manpages-dev -y
 
 # gcc 설치
-apt install gcc -y
+apt-get install gcc -y
 
 # pidtree 설치
 curl -LO https://go.dev/dl/go1.19.3.linux-${ARCH}.tar.gz && tar -C /usr/local -xzf /root/go1.19.3.linux-${ARCH}.tar.gz
@@ -50,7 +46,6 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-apt-get update
 
 apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
@@ -68,3 +63,7 @@ docker --version
 go version
 pidtree --version
 brctl --version
+
+echo '{"features":{"buildkit":true}}' > /etc/docker/daemon.json
+
+service docker start
