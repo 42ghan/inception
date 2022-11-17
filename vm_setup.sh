@@ -55,6 +55,9 @@ apt-get install bridge-utils -y
 # net-tools 설치
 apt-get install net-tools -y
 
+# set timezone
+ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
 exec bash
 
 clear
