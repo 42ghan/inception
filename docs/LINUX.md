@@ -35,7 +35,7 @@
   - Alpine is much lighter than Debian (busybox instead of GNU Core Utils, musl libc instead of glibc). Size matters when images are distributed to rated cloud services (Nick shows price comparison in his [article](https://nickjanetakis.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image)).
     <figure>
       <p align="center">
-        <img src="assets/linux/debian_alpine_size.png" alt="size difference between debian and alpine based images" style="width: 80%; height: 80%; ">
+        <img src="h../assetslinux/debian_alpine_size.png" alt="size difference between debian and alpine based images" style="width: 80%; height: 80%; ">
       </p>
     </figure>
   - Alpine's package manager `apk` automatically cleans up packages while debian requires an additional command (`apt-get clean`) to be executed.

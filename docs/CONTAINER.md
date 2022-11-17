@@ -31,7 +31,7 @@
 - Namespaces of each process can be checked inside the `/proc/[pid]/ns/` directory.
 <figure>
 <p align="center">
-  <img src="assets/basic/namespaces.png" alt="checking process's namespace" style="width: 80%; height: 80%; ">
+  <img src="h../assetsbasic/namespaces.png" alt="checking process's namespace" style="width: 80%; height: 80%; ">
 </p>
 </figure>
 
@@ -43,7 +43,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/cgroup_namespace.png" alt="cgroup namespace example" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/cgroup_namespace.png" alt="cgroup namespace example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -60,7 +60,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/cgroupfs.png" alt="cgroupfs ls" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/cgroupfs.png" alt="cgroupfs ls" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -68,7 +68,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/new_cgroup.png" alt="new cgroup example" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/new_cgroup.png" alt="new cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -76,7 +76,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/moving_cgroup.png" alt="moving cgroup example" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/moving_cgroup.png" alt="moving cgroup example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -84,7 +84,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/cgroup_limits.png" alt="cgroup limits example" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/cgroup_limits.png" alt="cgroup limits example" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -92,7 +92,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/cgroup_controllers.png" alt="cgroup controllers" style="width: 72%; height: 72%; ">
+  <img src="h../assetsbasic/cgroup_controllers.png" alt="cgroup controllers" style="width: 72%; height: 72%; ">
 </p>
 </figure>
 
@@ -113,7 +113,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%;">
+  <img src="h../assetsbasic/cgroup_hierarchy.png" alt="cgroup hierarchy" style="width: 100%; height: 100%;">
 </p>
 </figure>
 
@@ -151,7 +151,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/veth.png" alt="veth to docker0" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/veth.png" alt="veth to docker0" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -159,13 +159,13 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/net_ns_two.png" alt="namespace comparison" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/net_ns_two.png" alt="namespace comparison" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
 <figure>
 <p align="center">
-  <img src="assets/basic/net_ns.png" alt="network namespace difference demonstration" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/net_ns.png" alt="network namespace difference demonstration" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -196,7 +196,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/mnt_ns_example.png" alt="mount namespace shared and private example" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/mnt_ns_example.png" alt="mount namespace shared and private example" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -210,7 +210,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/pid_ns_signal.png" alt="pid namespace signal example" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/pid_ns_signal.png" alt="pid namespace signal example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -262,13 +262,13 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/pidtree_first.png" alt="pidtree example" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/pidtree_first.png" alt="pidtree example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
   <figure>
   <p align="center">
-    <img src="assets/basic/pidtree_second.png" alt="pidtree example two" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/pidtree_second.png" alt="pidtree example two" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -285,7 +285,7 @@
 
 <figure>
   <p align="center">
-    <img src="assets/basic/time_ns.png" alt="docker container does not set its own time ns" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/time_ns.png" alt="docker container does not set its own time ns" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -296,7 +296,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/user_ns.png" alt="user namespace example output" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/user_ns.png" alt="user namespace example output" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -380,7 +380,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/user_ns_caps.png" alt="full capabilities in a new user namespace" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/user_ns_caps.png" alt="full capabilities in a new user namespace" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -391,7 +391,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/user_ns_no_initial_mapping.png" alt="uid and gid are not mapped initially when user namespace is created" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/user_ns_no_initial_mapping.png" alt="uid and gid are not mapped initially when user namespace is created" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -404,7 +404,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/uts_example.png" alt="entering uts namespace example" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/uts_example.png" alt="entering uts namespace example" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -430,7 +430,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/chroot_break.png" alt="breaking chroot jail" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/chroot_break.png" alt="breaking chroot jail" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -438,7 +438,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/proc_root.png" alt="different proc root directories" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/proc_root.png" alt="different proc root directories" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -467,7 +467,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/pivot_root_example.png" alt="pivot root example" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/pivot_root_example.png" alt="pivot root example" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -537,7 +537,7 @@
 
   <figure>
   <p align="center">
-    <img src="assets/basic/pivot_root_jail.png" alt="pivot root jail escape failure" style="width: 72%; height: 72%;">
+    <img src="h../assetsbasic/pivot_root_jail.png" alt="pivot root jail escape failure" style="width: 72%; height: 72%;">
   </p>
   </figure>
 
@@ -572,7 +572,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/image_relationship.png" alt="parent child relationship between multi-layered container images" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/image_relationship.png" alt="parent child relationship between multi-layered container images" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -591,7 +591,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/docker_runc.png" alt="docker runc" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/docker_runc.png" alt="docker runc" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
@@ -599,7 +599,7 @@
 
 <figure>
 <p align="center">
-  <img src="assets/basic/runc_standalone.png" alt="runc standalone" style="width: 72%; height: 72%;">
+  <img src="h../assetsbasic/runc_standalone.png" alt="runc standalone" style="width: 72%; height: 72%;">
 </p>
 </figure>
 
