@@ -14,6 +14,4 @@ COPY db_entrypoint.sh .
 
 RUN ./db_entrypoint.sh
 
-# ENTRYPOINT ["tini", "--", "mariadbd", "--user=mysql"]
-EXPOSE 3306
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["tini", "--", "mariadbd", "--user=mysql"]

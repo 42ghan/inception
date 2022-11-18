@@ -1,0 +1,63 @@
+# SERVICES
+services:
+  dbmariadb:
+    build:
+      context: ./mariadb
+      container_name: maraidb-inception
+      configs:
+        - source: db_config
+          target: /etc/my.cnf
+    expose:
+      - "3306"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.2
+    profiles:
+      - back
+    restart: on-failure
+
+  wordpress:
+    build:
+      context: ./wordpress
+      container_name: wordpress-inception
+    depends_on:
+      mariadb: service_healthy
+    networks:
+      backend:
+        ipv4_address: 172.18.0.3
+    profiles:
+      - back
+      - front
+    restart: on-failure
+
+  nginx:
+    build:
+      context: ./nginx
+      container_name: nginx-inception
+    depends_on:
+      wordpress: service_healthy
+    domainname: ghan.42.fr
+    profiles:
+      - back
+      - front
+    restart: on-failure
+
+# CONFIGS
+configs:
+  db_config:
+    file: ./services/mariadb/config/my.cnf
+
+# NETWORKS
+networks:
+  backend:
+    ipam:
+      configs:
+        - subnet: 172.18.0.0/24
+          ip_range: 172.28.0.0/24
+          gateway: 172.18.0.0
+    internal: true
+
+# VOLUMES
+volumes:
+  db-data:
+  wp-resources:
