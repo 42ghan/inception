@@ -8,16 +8,12 @@ RUN apk update \
 
 COPY my.cnf /etc/my.cnf
 
-ARG DB_ADDRESS
-RUN	DB_BIND_ADDRESS=$DB_ADDRESS \
-	; sed -i "s/bind-address=/bind-address=$DB_BIND_ADDRESS/" /etc/my.cnf
-
-EXPOSE 3306
-
 WORKDIR /var/lib/mysql
 
 COPY db_entrypoint.sh .
 
 RUN ./db_entrypoint.sh
 
-ENTRYPOINT ["tini", "--", "mariadbd", "--user=mysql"]
+# ENTRYPOINT ["tini", "--", "mariadbd", "--user=mysql"]
+EXPOSE 3306
+ENTRYPOINT ["/bin/sh"]
