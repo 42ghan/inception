@@ -17,8 +17,8 @@ services:
     networks:
       backend:
         ipv4_address: 172.18.0.2
-    profiles:
-      - back
+    # profiles:
+    #   - back
     volumes:
       - db_data:/var/lib/mysql
     restart: on-failure

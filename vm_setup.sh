@@ -49,6 +49,10 @@ echo \
 apt-get update \
 &&apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
+# docker-compose 설치
+curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose \
+&& chmod +x /usr/local/bin/docker-compose
+
 # bridge utils 설치
 apt-get install bridge-utils -y
 
@@ -63,6 +67,7 @@ exec bash
 clear
 
 docker --version
+docker-compose --version
 go version
 pidtree --version
 brctl --version
