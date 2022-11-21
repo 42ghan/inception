@@ -5,14 +5,14 @@ set -e
 
 # Check if system table is already installed
 if [[ ! -d /var/lib/mysql/mysql ]]; then
-	# Install or upgrade system table according to configuration provided by /etc/my.cnf
+	# Install or upgrade system table according to a configuration provided by /etc/my.cnf
 	mariadb-install-db --user=mysql
 
 	# Execute mariadb server
 	"$@" &
 
 	# Wait until maraidb server is ready
-	mariadb-admin ping --wait=.5
+	mariadb-admin ping --wait=.5 --connect-timeout=10
 
 	# Initialize user and restart db
 	mariadb -u root -e "DROP DATABASE IF EXISTS test;" \

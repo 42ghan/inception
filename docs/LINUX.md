@@ -42,6 +42,17 @@
   - Alpine exposes less attack surface.
   - Alpine is more intriguing.
 
+### Setting the Timezone in Alpine
+```bash
+  apk update \
+	&& apk add --no-cache --virtual build-deps tzdata \
+	&& cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
+	&& echo "Asia/Seoul" > /etc/timezone \
+	&& apk del build-deps
+
+  # "Asia/Seoul" can be replaced by any desired timezone that exists in /usr/share/zoneinfo
+```
+
 ## References
 - [Debian changing language](https://wiki.debian.org/ChangeLanguage)
 - [Debian locale setting](https://wiki.debian.org/Locale)
@@ -52,4 +63,5 @@
 - [crunchtools.com. (n.d.). A Comparison of Linux Container Images. [online]](https://crunchtools.com/comparison-linux-container-images/)
 - [www.redhat.com. (n.d.). Container Tidbits: Can Good Supply Chain Hygiene Mitigate Base Image Sizes? [online]](https://www.redhat.com/en/blog/container-tidbits-can-good-supply-chain-hygiene-mitigate-base-image-sizes)
 - [opensource.com. (n.d.). Do Linux distributions still matter with containers? | Opensource.com. [online]](https://opensource.com/article/19/2/linux-distributions-still-matter-containers)
-- [wiki.alpinelinux.org. (n.d.). Comparison with other distros - Alpine Linux. [online]](https://wiki.alpinelinux.org/wiki/Comparison_with_other_distros)
+- [wiki.alpinelinux.org. (n.d.). Comparison with other distros - Alpine Linux. [online]]op(https://wiki.alpinelinux.org/wiki/Comparison_with_other_distros)
+- [wiki.alpinelinux.org. (n.d.). Setting the timezone - Alpine Linux. [online]](https://wiki.alpinelinux.org/wiki/Setting_the_timezone)
