@@ -5,13 +5,6 @@ RUN apk update \
 	mysql-client=10.6.10-r0 \
 	tini=0.19.0-r0
 
-
-COPY my.cnf /etc/my.cnf
-
-WORKDIR /var/lib/mysql
-
 COPY db_entrypoint.sh .
 
-RUN ./db_entrypoint.sh
-
-ENTRYPOINT ["tini", "--", "mariadbd", "--user=mysql"]
+ENTRYPOINT [ "./db_entrypoint.sh", "mariadbd", "--user=mysql" ]
