@@ -17,42 +17,50 @@ services:
     networks:
       backend:
         ipv4_address: 172.18.0.2
-    # profiles:
-    #   - back
     volumes:
       - db_data:/var/lib/mysql
     restart: on-failure
-    # tty: true
-    # wordpress:
-    #   build:
-    #     context: ./wordpress
-    #     container_name: wordpress
-    #   depends_on:
-    #     mariadb: service_healthy
-    #   networks:
-    #     backend:
-    #       ipv4_address: 172.18.0.3
-    #   profiles:
-    #     - back
-    #     - front
-    #   restart: on-failure
 
-    # nginx:
-    #   build:
-    #     context: ./nginx
-    #     container_name: nginx
-    #   depends_on:
-    #     wordpress: service_healthy
-    #   domainname: ghan.42.fr
-    #   profiles:
-    #     - back
-    #     - front
-    #   restart: on-failure
+  wordpress:
+    build:
+      context: ./services/wordpress
+    container_name: wordpress # depends_on:
+    expose:
+      - "9000"
+    #   mariadb: service_healthy
+    networks:
+      backend:
+        ipv4_address: 172.18.0.3
+    volumes:
+      - wp_resources:/var/www/wordpress
+    tty: on
+    restart: on-failure
 
-    # CONFIGS
+  nginx:
+    build:
+      context: ./services/nginx
+    container_name: nginx
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/conf.d/inception.conf
+    expose:
+      - "4242"
+    # depends_on:
+    #   wordpress: service_healthy
+    hostname: ghan.42.fr
+    networks:
+      backend:
+        ipv4_address: 172.18.0.4
+    volumes:
+      - wp_resources:/var/www/wordpress
+    restart: on-failure
+
+# CONFIGS
 configs:
   db_config:
-    file: ./services/mariadb/config/my.cnf
+    file: ./services/mariadb/configs/my.cnf
+  nginx_config:
+    file: ./services/nginx/configs/inception.conf
 
 # NETWORKS
 networks:
@@ -62,7 +70,6 @@ networks:
         - subnet: 172.18.0.0/24
           ip_range: 172.28.0.0/24
           gateway: 172.18.0.1
-    internal: true
 
 # VOLUMES
 volumes:
@@ -71,5 +78,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ghan/data
+      device: /home/ghan/data/db
   wp_resources:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ghan/data/wp
