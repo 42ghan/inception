@@ -16,8 +16,9 @@ RUN printf "%s%s%s%s\n" \
 	"/main" \
 	| tee -a /etc/apk/repositories \
 	&& curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
-	&& mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/
+	&& mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/ \
+	&& apk add --no-cache nginx@nginx
 
-RUN apk add --no-cache nginx@nginx
+COPY nginx_entrypoint.sh .
 
-ENTRYPOINT [ "tini", "--", "nginx", "-g", "daemon off;" ]
+ENTRYPOINT [ "./nginx_entrypoint.sh", "nginx" ]

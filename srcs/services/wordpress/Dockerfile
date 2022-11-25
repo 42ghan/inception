@@ -8,7 +8,11 @@ RUN apk update \
 	php7-mysqli \
 	php7-zlib \
 	php7-curl \
-	curl \
+	php7-phar \
+	php7-json \
+	php7-iconv \
+	mysql-client=10.6.10-r0 \
+	curl=7.80.0-r4 \
 	tini=0.19.0-r0 \
 	tzdata \
 	&& cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \

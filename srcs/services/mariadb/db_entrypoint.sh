@@ -16,15 +16,13 @@ if [[ ! -d /var/lib/mysql/mysql ]]; then
 
 	# Initialize user and restart db
 	mariadb -u root -e "DROP DATABASE IF EXISTS test;" \
-	&& mariadb -u root -e "CREATE USER IF NOT EXISTS 'inception'@'172.18.0.3';" \
-	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'inception'@'172.18.0.3' IDENTIFIED BY 'ghandb';"
+	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$REMOTE_ADDRESS';" \
+	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'$REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';"
 
 	# Stop current mariadb server
 	mariadb-admin shutdown
-	
-	clear
 fi
 
 # Replace PID 1 with tini and execute mariadb
-echo -e '\n\n"Downward Is The Only Way Forward."\nWELCOME TO MARIADB!\n\n'
+echo -e '\n\n"Downward Is The Only Way Forward."\nMARIADB IS UP!\n\n'
 exec tini -- "$@"

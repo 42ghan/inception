@@ -5,6 +5,7 @@ name: "inception"
 
 # SERVICES
 services:
+  # MARIADB
   mariadb:
     build:
       context: ./services/mariadb
@@ -12,6 +13,7 @@ services:
     configs:
       - source: db_config
         target: /etc/my.cnf
+    env_file: .mariadb.env
     expose:
       - "3306"
     networks:
@@ -21,46 +23,64 @@ services:
       - db_data:/var/lib/mysql
     restart: on-failure
 
+  # WORDPRESS
   wordpress:
     build:
       context: ./services/wordpress
-    container_name: wordpress # depends_on:
+    container_name: wordpress
+    configs:
+      - source: php_config
+        target: /etc/php7/php.ini
+      - source: wp_config
+        target: /etc/php7/php-fpm.d/www.conf
+    depends_on:
+      - mariadb
+    env_file: .wordpress.env
     expose:
       - "9000"
-    #   mariadb: service_healthy
     networks:
       backend:
         ipv4_address: 172.18.0.3
     volumes:
-      - wp_resources:/var/www/wordpress
+      - wp_resources:/var/www/ghan.42.fr
     tty: on
     restart: on-failure
 
+  # NGINX
   nginx:
     build:
       context: ./services/nginx
     container_name: nginx
     configs:
-      - source: nginx_config
+      - source: nginx_global_config
+        target: /etc/nginx/nginx.conf
+      - source: nginx_local_config
         target: /etc/nginx/conf.d/inception.conf
+    depends_on:
+      - wordpress
+    env_file: .nginx.env
     expose:
-      - "4242"
-    # depends_on:
-    #   wordpress: service_healthy
+      - "443"
     hostname: ghan.42.fr
     networks:
       backend:
         ipv4_address: 172.18.0.4
     volumes:
-      - wp_resources:/var/www/wordpress
+      - wp_resources:/var/www/ghan.42.fr
     restart: on-failure
 
 # CONFIGS
 configs:
   db_config:
     file: ./services/mariadb/configs/my.cnf
-  nginx_config:
-    file: ./services/nginx/configs/inception.conf
+  nginx_global_config:
+    file: ./services/nginx/configs/nginx.conf
+  nginx_local_config:
+    file: ./services/nginx/configs/ghan.42.fr.conf
+  wp_config:
+    file: ./services/wordpress/configs/www.conf
+  php_config:
+    file: ./services/wordpress/configs/php.ini
 
 # NETWORKS
 networks:
