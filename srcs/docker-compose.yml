@@ -13,7 +13,7 @@ services:
     configs:
       - source: db_config
         target: /etc/my.cnf
-    env_file: .mariadb.env
+    env_file: ./env/.mariadb.env
     expose:
       - "3306"
     networks:
@@ -35,7 +35,7 @@ services:
         target: /etc/php7/php-fpm.d/www.conf
     depends_on:
       - mariadb
-    env_file: .wordpress.env
+    env_file: ./env/.wordpress.env
     expose:
       - "9000"
     networks:
@@ -58,7 +58,7 @@ services:
         target: /etc/nginx/conf.d/inception.conf
     depends_on:
       - wordpress
-    env_file: .nginx.env
+    env_file: ./env/.nginx.env
     expose:
       - "443"
     hostname: ghan.42.fr
