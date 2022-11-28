@@ -24,4 +24,4 @@ RUN printf "%s%s%s%s\n" \
 # Copy the entrypoint script
 COPY nginx_entrypoint.sh .
 
-ENTRYPOINT [ "./nginx_entrypoint.sh", "nginx" ]
+ENTRYPOINT [ "./nginx_entrypoint.sh", "nginx", "-g", "daemon off;" ]

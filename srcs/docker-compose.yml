@@ -68,6 +68,7 @@ services:
         ipv4_address: 172.18.0.4
     volumes:
       - wp_resources:/var/www/ghan.42.fr
+    stop_signal: SIGQUIT
     restart: on-failure
 
 # CONFIGS
