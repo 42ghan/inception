@@ -9,7 +9,7 @@ services:
   mariadb:
     build:
       context: ./services/mariadb
-    container_name: maraidb
+    container_name: mariadb
     configs:
       - source: db_config
         target: /etc/my.cnf
@@ -34,7 +34,8 @@ services:
       - source: wp_config
         target: /etc/php7/php-fpm.d/www.conf
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     env_file: ./.env
     expose:
       - "9000"

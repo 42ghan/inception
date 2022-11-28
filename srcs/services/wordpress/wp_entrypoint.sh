@@ -3,20 +3,16 @@
 # Exit shell script when any command fails
 set -e
 
-id www-data > /dev/null 2>&1 || adduser -S www-data -G www-data
-
-cd /usr/local/bin \
-&& curl -LO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > /dev/null 2>&1 \
-&& chmod +x wp-cli.phar \
-&& mv wp-cli.phar wp
-
 if [[ ! -f /var/www/ghan.42.fr/index.php ]]; then
 	cd /var/www \
 	&& wp core download --path=ghan.42.fr --version=latest \
-	&& chown -R www-data:www-data /var/www/ghan.42.fr \
 	&& cd ghan.42.fr \
-	&& wp config create --dbhost=$DB_HOST --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWD \
-	&& wp db create \
+	&& wp config create --dbhost=$WP_DB_HOST --dbname=$WP_DB_NAME --dbuser=$WP_DB_USER --dbpass=$WP_DB_PASSWD 
+	
+	# Wait until maraidb server is ready
+	mariadb-admin ping --user=$WP_DB_USER -p$WP_DB_PASSWD --host=$WP_DB_HOST --wait=.5 --connect-timeout=10
+	
+	wp db create \
 	&& wp core install --url=https://ghan.42.fr/ --title="ghan's inception" --admin_user=$ADMIN_USER \
 		--admin_password=$ADMIN_PASSWD --admin_email=$ADMIN_EMAIL --skip-email
 fi

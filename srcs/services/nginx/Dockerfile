@@ -1,14 +1,16 @@
 FROM alpine:3.15
 
+# Install necessary pacakges & set timezone
 RUN apk update \
 	&& apk add --no-cache ca-certificates=20220614-r0 \
 	curl=7.80.0-r4 \
 	openssl=1.1.1s-r1 \
 	tini=0.19.0-r0 \
-	tzdata \
+	tzdata=2022f-r1 \
 	&& cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
 	&& apk del tzdata
 
+# Install the latest stable NGINX from nginx repository
 RUN printf "%s%s%s%s\n" \
 	"@nginx " \
 	"http://nginx.org/packages/alpine/v" \
@@ -19,6 +21,7 @@ RUN printf "%s%s%s%s\n" \
 	&& mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/ \
 	&& apk add --no-cache nginx@nginx
 
+# Copy the entrypoint script
 COPY nginx_entrypoint.sh .
 
 ENTRYPOINT [ "./nginx_entrypoint.sh", "nginx" ]
