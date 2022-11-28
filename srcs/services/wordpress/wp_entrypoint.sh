@@ -13,8 +13,9 @@ if [[ ! -f /var/www/ghan.42.fr/index.php ]]; then
 	mariadb-admin ping --user=$WP_DB_USER -p$WP_DB_PASSWD --host=$WP_DB_HOST --wait=.5 --connect-timeout=10
 	
 	wp db create \
-	&& wp core install --url=https://ghan.42.fr/ --title="ghan's inception" --admin_user=$ADMIN_USER \
-		--admin_password=$ADMIN_PASSWD --admin_email=$ADMIN_EMAIL --skip-email
+	&& wp core install --url=https://ghan.42.fr/ --title="ghan's inception" --admin_user=$WP_ADMIN_USER \
+		--admin_password=$WP_ADMIN_PASSWD --admin_email=$WP_ADMIN_EMAIL --skip-email \
+	&& wp user create $WP_USER $WP_USER_EMAIL --user_pass=$WP_USER_PASSWD --role=author
 fi
 
 # Execute php-fpm
