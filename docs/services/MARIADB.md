@@ -5,7 +5,7 @@
 - "When MariaDB Server’s predecessor, MySQL, was bought by Oracle in 2009, MySQL founder Michael “Monty” Widenius forked the project due to concerns about Oracle’s stewardship, naming the new project MariaDB." from [MariaDB Foundation](https://mariadb.org/en/).
 
 ### Quick Links
-  - [MariaDB Configuration for Inception - /etc/my.cnf](../../srcs/services/mariadb/config/my.cnf)
+  - [MariaDB Configuration for Inception - /etc/my.cnf](../../srcs/services/mariadb/configs/my.cnf)
   - [Dockerfile for MariaDB Image](../../srcs/services/mariadb/Dockerfile)
   - [Mariadb Container's Entrypoint Shell Script](../../srcs/services/mariadb/db_entrypoint.sh)
   - [Docker Compose for Inception](../../srcs/docker-compose.yml)
