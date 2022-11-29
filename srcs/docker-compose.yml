@@ -16,6 +16,7 @@ services:
     env_file: ./.env
     expose:
       - "3306"
+    hostname: inception_mariadb
     networks:
       backend:
         ipv4_address: 172.18.0.2
@@ -39,6 +40,7 @@ services:
     env_file: ./.env
     expose:
       - "9000"
+    hostname: inception_wordpress
     networks:
       backend:
         ipv4_address: 172.18.0.3
