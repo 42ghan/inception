@@ -2,8 +2,7 @@ FROM alpine:3.15
 
 # Install necessary pacakges & set timezone
 RUN apk update \
-	&& apk add --no-cache php7-common=7.4.33-r0 \
-	php7=7.4.33-r0 \
+	&& apk add --no-cache php7=7.4.33-r0 \
 	php7-fpm=7.4.33-r0 \
 	php7-opcache=7.4.33-r0 \
 	php7-gd=7.4.33-r0 \
@@ -16,6 +15,7 @@ RUN apk update \
 	curl=7.80.0-r4 \
 	tini=0.19.0-r0 \
 	tzdata=2022f-r1 \
+	su-exec=0.2-r1 \
 	&& cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
 	&& apk del tzdata
 
@@ -31,8 +31,5 @@ RUN cd /usr/local/bin \
 
 # Copy the entrypoint script
 COPY wp_entrypoint.sh .
-
-# Change to a system user www-data
-USER www-data
 
 ENTRYPOINT [ "./wp_entrypoint.sh", "php-fpm7", "-F" ]
