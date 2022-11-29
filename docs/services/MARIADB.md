@@ -21,7 +21,7 @@
 - As the result of installing these packages, a user named `mysql` will be created on the system and the user and the system's `root` will be added to a new group `mysql`, and two users, `root` and `mysql`, will be registered to the database.
 
 ## MariaDB Configuration
-- Before installing the system table and running the server, a few options need to be and can be configured.
+- Before installing the system table and running the server, a few options are required to be and can be configured.
 - By default, these options are read from `/etc/my.cnf`, and then `~/my.cnf`. These paths may be changed by setting `--defaults-file` when running mariadb CLI tools. Also, inside the default files, other option files may be included by using `!include` or `!includedir` directives.
   > If the same option is set more than once, the last value is set.
 - By passing `--print-defaults` option to mariadb CLI tools, the applied default options, that were set in the default files, are listed.

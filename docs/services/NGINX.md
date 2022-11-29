@@ -15,6 +15,7 @@
   - [Configuring reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)
 - Refer to following links for setting up NGINX as Wordpress's fastcgi proxy:
   - Setting up NGINX and Wordpress [by NGINX](https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/) and [by Wordpress](https://wordpress.org/support/article/nginx/)
+
 ### Setting up a TLS layer
 <!-- TODO -->
 
