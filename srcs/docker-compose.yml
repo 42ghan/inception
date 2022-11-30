@@ -62,6 +62,7 @@ services:
     depends_on:
       - wordpress
       - adminer
+      - static_www
     env_file: ./.env
     expose:
       - "443"
@@ -72,6 +73,7 @@ services:
     volumes:
       - wp_resources:/var/www/ghan.42.fr
       - adminer_resources:/var/www/adminer
+      - static_resources:/var/www/static
     stop_signal: SIGQUIT
     restart: on-failure
 
@@ -89,13 +91,22 @@ services:
       mariadb:
         condition: service_healthy
     expose:
-      - "9999"
+      - "9000"
     hostname: inception_adminer
     networks:
       backend:
         ipv4_address: 172.18.0.5
     volumes:
       - adminer_resources:/var/www/adminer
+    restart: on-failure
+
+  # STATIC
+  static_www:
+    build:
+      context: ./services/static_www
+    container_name: static_www
+    volumes:
+      - static_resources:/var/www/static
     restart: on-failure
 
 # CONFIGS
@@ -144,3 +155,9 @@ volumes:
       type: none
       o: bind
       device: /home/ghan/data/am
+  static_resources:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ghan/data/st
