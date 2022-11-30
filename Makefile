@@ -5,7 +5,8 @@ USER			=	ghan
 COMPOSE_SOURCE	=	./srcs/docker-compose.yml
 
 VOLUME_PATH		=	/home/$(USER)/data/db \
-					/home/$(USER)/data/wp
+					/home/$(USER)/data/wp \
+					/home/$(USER)/data/am
 
 .PHONY	:	all
 all		: 	build
