@@ -30,6 +30,7 @@ RUN cd /usr/local/bin \
 	&& chown -R www-data:www-data /var/log/php7
 
 # Copy the entrypoint script
+WORKDIR /root
 COPY wp_entrypoint.sh .
 
 ENTRYPOINT [ "./wp_entrypoint.sh", "php-fpm7", "-F" ]

@@ -16,8 +16,10 @@ if [[ ! -d /var/lib/mysql/mysql ]]; then
 
 	# Initialize user and restart db
 	mariadb -u root -e "DROP DATABASE IF EXISTS test;" \
-	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$REMOTE_ADDRESS';" \
-	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'$REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';"
+	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$WP_REMOTE_ADDRESS';" \
+	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'$WP_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';" \
+	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$ADMINER_REMOTE_ADDRESS';" \
+	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'$ADMINER_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';"
 
 	# Stop current mariadb server
 	mariadb-admin shutdown

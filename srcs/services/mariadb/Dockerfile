@@ -10,6 +10,7 @@ RUN apk update \
 	&& apk del tzdata
 
 # Copy the entrypoint script
+WORKDIR /root
 COPY db_entrypoint.sh .
 
 # Set healthcheck command

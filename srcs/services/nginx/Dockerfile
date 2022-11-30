@@ -22,6 +22,7 @@ RUN printf "%s%s%s%s\n" \
 	&& apk add --no-cache nginx@nginx
 
 # Copy the entrypoint script
+WORKDIR /root
 COPY nginx_entrypoint.sh .
 
 ENTRYPOINT [ "./nginx_entrypoint.sh", "nginx", "-g", "daemon off;" ]

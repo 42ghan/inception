@@ -30,7 +30,7 @@ services:
       context: ./services/wordpress
     container_name: wordpress
     configs:
-      - source: php_config
+      - source: wp_fpm_config
         target: /etc/php7/php.ini
       - source: wp_config
         target: /etc/php7/php-fpm.d/www.conf
@@ -57,10 +57,11 @@ services:
     configs:
       - source: nginx_global_config
         target: /etc/nginx/nginx.conf
-      - source: nginx_local_config
-        target: /etc/nginx/conf.d/inception.conf
+      - source: nginx_server_config
+        target: /etc/nginx/conf.d/
     depends_on:
       - wordpress
+      - adminer
     env_file: ./.env
     expose:
       - "443"
@@ -70,7 +71,31 @@ services:
         ipv4_address: 172.18.0.4
     volumes:
       - wp_resources:/var/www/ghan.42.fr
+      - adminer_resources:/var/www/adminer
     stop_signal: SIGQUIT
+    restart: on-failure
+
+  # ADMINER
+  adminer:
+    build:
+      context: ./services/adminer
+    container_name: adminer
+    configs:
+      - source: adminer_fpm_config
+        target: /etc/php7/php.ini
+      - source: adminer_config
+        target: /etc/php7/php-fpm.d/www.conf
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    expose:
+      - "9999"
+    hostname: inception_adminer
+    networks:
+      backend:
+        ipv4_address: 172.18.0.5
+    volumes:
+      - adminer_resources:/var/www/adminer
     restart: on-failure
 
 # CONFIGS
@@ -79,12 +104,16 @@ configs:
     file: ./services/mariadb/configs/my.cnf
   nginx_global_config:
     file: ./services/nginx/configs/nginx.conf
-  nginx_local_config:
-    file: ./services/nginx/configs/ghan.42.fr.conf
+  nginx_server_config:
+    file: ./services/nginx/configs/servers/
+  wp_fpm_config:
+    file: ./services/wordpress/configs/php.ini
   wp_config:
     file: ./services/wordpress/configs/www.conf
-  php_config:
-    file: ./services/wordpress/configs/php.ini
+  adminer_fpm_config:
+    file: ./services/adminer/configs/php.ini
+  adminer_config:
+    file: ./services/adminer/configs/www.conf
 
 # NETWORKS
 networks:
@@ -109,3 +138,9 @@ volumes:
       type: none
       o: bind
       device: /home/ghan/data/wp
+  adminer_resources:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ghan/data/am
