@@ -153,4 +153,6 @@ service docker start
 
 echo '{"features":{"buildkit":true}}' > /etc/docker/daemon.json
 
+echo -e "172.18.0.4 ghan.42.fr\n" >> /etc/hosts
+
 exec bash
