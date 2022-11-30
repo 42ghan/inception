@@ -6,7 +6,7 @@
   - MySQL version 5.7 or greater/MariaDB version 10.3 or greater.
   - HTTPS support
 
-### Quick Link
+## Quick Link
 - [`php-fpm` Configuration](../../srcs/services/wordpress/configs/php.ini)
 - [Wordpress Configuration](../../srcs/services/wordpress/configs/www.conf)
 - [Dockerfile for wordpress Image](../../srcs/services/wordpress/Dockerfile)
@@ -38,7 +38,7 @@
 - It runs multiple workers and has a master process that maintains these workers. Note that the master process is run as the root, but the workers as www-data, as is configured in the [www.conf](../../srcs/services/wordpress/configs/www.conf) for security reasons.
   <figure>
     <p align="center">
-    <img src="../../assets/services/wordpress/wp_workers.png" alt="the default wordpress db tables" style="width: 80%; height: 80%; ">
+    <img src="../assets/services/wordpress/wp_workers.png" alt="the default wordpress db tables" style="width: 80%; height: 80%; ">
     </p>
   </figure>
 
@@ -97,7 +97,7 @@
 - Below is the list of tables in the default Wordpress database.
   <figure>
     <p align="center">
-    <img src="../../assets/services/wordpress/wp_db_table.png" alt="the default wordpress db tables" style="width: 50%; height: 70%; ">
+    <img src="../assets/services/wordpress/wp_db_table.png" alt="the default wordpress db tables" style="width: 50%; height: 70%; ">
     </p>
   </figure>
 
@@ -158,7 +158,7 @@
 - Wordpress website will be able to be accessed by the hosting NGINX server's name or its IP address (if everything was done properly...).
   <figure>
     <p align="center">
-    <img src="../../assets/services/wordpress/wp_site.png" alt="wordpress website screenshot" style="width: 80%; height: 80%; ">
+    <img src="../assets/services/wordpress/wp_site.png" alt="wordpress website screenshot" style="width: 80%; height: 80%; ">
     </p>
   </figure>
 - The full list of `wp-cli` commands can be found in [this link](https://developer.wordpress.org/cli/commands/).
@@ -173,7 +173,7 @@
   > Note that `su` or `sudo` may cause siganl-forwarding issue inside a container, since they `fork` before `exec` while `gosu` and `su-exec` do not.
   <figure>
     <p align="center">
-    <img src="../../assets/services/wordpress/gosu_example.png" alt="gosu's advantage in one picture" style="width: 80%; height: 80%; ">
+    <img src="../assets/services/wordpress/gosu_example.png" alt="gosu's advantage in one picture" style="width: 80%; height: 80%; ">
     </p>
   </figure>
   

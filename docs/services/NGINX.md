@@ -3,7 +3,7 @@
 - NGINX is a popular open source HTTP and reverse proxy server, which was originally written by, a Russian engineer, [Igor Sysoev](http://sysoev.ru/en/). It can also be set up to function as a mail proxy server, and a TCP/UDP proxy server.
 - In addition to the basic feature of serving static and index files, NGINX provides caching feature and load balancing feature, with help from a paid product, NGINX Plus, as a reverse proxy server.
 
-### Quick Links
+## Quick Links
 - [Server Configuration for ghan.42.fr](../../srcs/services/nginx/configs/ghan.42.fr.conf)
 - [Dockerfile for NGINX Image](../../srcs/services/nginx/Dockerfile)
 - [NGINX Container's Entrypoint Shell Script](../../srcs/services/nginx/nginx_entrypoint.sh)
@@ -23,7 +23,7 @@
 - NGINX & NGINX Plus can be configured to act as a proxy that distributes requests to pools of multiple web/application servers, under a certain policy, to prevent overloading some servers while there are some idle servers.
   <figure>
     <p align="center">
-    <img src="../../assets/services/nginx/nginx_load_balance.png" alt="nginx load balancing" style="width: 100%; height: 80%; ">
+    <img src="../assets/services/nginx/nginx_load_balance.png" alt="nginx load balancing" style="width: 100%; height: 80%; ">
     </p>
   </figure>
 - NGINX can replace hardware load balancers or be used in parallel or in series with them. Moving the role of load balancing from physical to logical realm makes load balancing more easy-to-control and cost effective.
@@ -43,7 +43,7 @@
 - When NGINX is run, a master process spawns a number of worker processes. Note that the master process is run as the system's root user and the workers are run as nginx.
 	<figure>
 		<p align="center">
-			<img src="../../assets/services/nginx/nginx_worker_processes.png" alt="nginx load balancing" style="width: 100%; height: 80%; ">
+			<img src="../assets/services/nginx/nginx_worker_processes.png" alt="nginx load balancing" style="width: 100%; height: 80%; ">
 		</p>
 	</figure>
   

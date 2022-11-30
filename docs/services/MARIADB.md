@@ -4,7 +4,7 @@
 - MariaDB is an open source relational database management system.
 - "When MariaDB Server’s predecessor, MySQL, was bought by Oracle in 2009, MySQL founder Michael “Monty” Widenius forked the project due to concerns about Oracle’s stewardship, naming the new project MariaDB." from [MariaDB Foundation](https://mariadb.org/en/).
 
-### Quick Links
+## Quick Links
   - [MariaDB Configuration for Inception - /etc/my.cnf](../../srcs/services/mariadb/configs/my.cnf)
   - [Dockerfile for MariaDB Image](../../srcs/services/mariadb/Dockerfile)
   - [Mariadb Container's Entrypoint Shell Script](../../srcs/services/mariadb/db_entrypoint.sh)
@@ -27,7 +27,7 @@
 - By passing `--print-defaults` option to mariadb CLI tools, the applied default options, that were set in the default files, are listed.
   <figure>
       <p align="center">
-        <img src="../../assets/services/mariadb/print_defaults.png" alt="listing default options passed to mariadb CLI tools" style="width: 100%; height: 80%; ">
+        <img src="../assets/services/mariadb/print_defaults.png" alt="listing default options passed to mariadb CLI tools" style="width: 100%; height: 80%; ">
       </p>
   </figure>
 - Following `my.cnf` was applied to this project. Meaning of some important options will be explained in the following sub-section.
@@ -64,7 +64,7 @@
   - If the same error as the image below occurs, create the parent directory of the socket's path and set appropriate permissions.
     <figure>
       <p align="center">
-        <img src="../../assets/services/mariadb/socket_name_error.png" alt="socket name related error" style="width: 80%; height: 80%; ">
+        <img src="../assets/services/mariadb/socket_name_error.png" alt="socket name related error" style="width: 80%; height: 80%; ">
       </p>
     </figure>
 - `port`
@@ -88,13 +88,13 @@
 - Note that it is not recommended to run `mariadbd` (DB server) as the system's root user. By doing so, any user with the FILE privilege can create or modify resources on the server as root. That is why `--user` flag is set to `mysql` for both `mariadb-install-db` and `mariadbd`.
   <figure>
     <p align="center">
-      <img src="../../assets/services/mariadb/server_run_by_mysql.png" alt="--user=mysql option effect" style="width: 80%; height: 80%; ">
+      <img src="../assets/services/mariadb/server_run_by_mysql.png" alt="--user=mysql option effect" style="width: 80%; height: 80%; ">
     </p>
   </figure> 
 - As per the image below, the system table is owned by the user that ran `mariadb-install-db` script. If the user that runs `mariadbd` does not have permissions to this data, starting the server will fail.
   <figure>
       <p align="center">
-        <img src="../../assets/services/mariadb/system_table_owner.png" alt="system table ownership" style="width: 80%; height: 80%; ">
+        <img src="../assets/services/mariadb/system_table_owner.png" alt="system table ownership" style="width: 80%; height: 80%; ">
       </p>
   </figure>
 - If the system table is already there, running `mariadb-install-db` runs `mariadb-upgrade` instead, which is a tool that checks and updates tables to the latest version.
@@ -107,13 +107,13 @@
     - `mariadbd` executes its shutdown procedure once it receives `SIGTERM`.
       <figure>
         <p align="center">
-          <img src="../../assets/services/mariadb/sigterm_mariadbd.png" alt="graceful shutdown when SIGTERM is sent to mariadbd" style="width: 100%; height: 80%; ">
+          <img src="../assets/services/mariadb/sigterm_mariadbd.png" alt="graceful shutdown when SIGTERM is sent to mariadbd" style="width: 100%; height: 80%; ">
         </p>
       </figure>
     - `mariadbd-safe` ignores `SIGTERM`.
       <figure>
         <p align="center">
-          <img src="../../assets/services/mariadb/sigterm_mariadbd_safe.png" alt="SIGTERM is ignored by mariadbd-safe" style="width: 100%; height: 80%; ">
+          <img src="../assets/services/mariadb/sigterm_mariadbd_safe.png" alt="SIGTERM is ignored by mariadbd-safe" style="width: 100%; height: 80%; ">
         </p>
       </figure>
   - For such a reason, `mariadbd-safe` is not used and *"restart on crash"* requirement is met by Docker Compose's `restart` service-level attribute.
