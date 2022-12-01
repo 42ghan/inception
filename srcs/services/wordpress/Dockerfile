@@ -11,6 +11,7 @@ RUN apk update \
 	php7-phar=7.4.33-r0 \
 	php7-json=7.4.33-r0 \
 	php7-iconv=7.4.33-r0 \
+	php7-tokenizer=7.4.33-r0 \
 	mysql-client=10.6.10-r0 \
 	curl=7.80.0-r4 \
 	tini=0.19.0-r0 \
