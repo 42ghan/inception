@@ -37,6 +37,8 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     env_file: ./.env
     expose:
       - "9000"
@@ -100,6 +102,45 @@ services:
       - adminer_resources:/var/www/adminer
     restart: on-failure
 
+  # REDIS
+  redis:
+    build:
+      context: ./services/redis
+    container_name: redis
+    configs:
+      - source: redis_config
+        target: /etc/redis.conf
+    env_file: ./.env
+    expose:
+      - "6379"
+    hostname: inception_redis
+    networks:
+      backend:
+        ipv4_address: 172.18.0.6
+    restart: on-failure
+
+  # CADVISOR
+  cadvisor:
+    privileged: true
+    build:
+      context: ./services/cadvisor
+    container_name: cadvisor
+    expose:
+      - "8080"
+    hostname: inception_cadvisor
+    networks:
+      backend:
+        ipv4_address: 172.18.0.7
+    volumes:
+      - /:/rootfs:ro \
+      - /var/run:/var/run:ro \
+      - /sys:/sys:ro \
+      - /var/lib/docker/:/var/lib/docker:ro \
+      - /dev/disk/:/dev/disk:ro \
+    devices:
+      - "/dev/kmsg:/dev/kmsg"
+    restart: on-failure
+
   # STATIC
   static_www:
     build:
@@ -107,6 +148,25 @@ services:
     container_name: static_www
     volumes:
       - static_resources:/var/www/static
+    restart: on-failure
+
+  # FTP
+  ftp:
+    build:
+      context: ./services/ftp
+    container_name: ftp
+    configs:
+      - source: ftp_config
+        target: /etc/vsftpd/vsftpd.conf
+    env_file: ./.env
+    expose:
+      - "20"
+      - "21"
+    networks:
+      backend:
+        ipv4_address: 172.18.0.8
+    volumes:
+      - wp_resources:/home/ghan/ftp
     restart: on-failure
 
 # CONFIGS
@@ -125,6 +185,10 @@ configs:
     file: ./services/adminer/configs/php.ini
   adminer_config:
     file: ./services/adminer/configs/www.conf
+  redis_config:
+    file: ./services/redis/configs/redis.conf
+  ftp_config:
+    file: ./services/ftp/configs/vsftpd.conf
 
 # NETWORKS
 networks:
