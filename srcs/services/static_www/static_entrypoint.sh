@@ -11,3 +11,5 @@ if [[ ! -f /var/www/static/CONTAINER.html ]]; then
   mv ./assets /var/www/static/assets \
   && rm -rf /root/inception
 fi
+
+echo -e '\n\n"True Inspiration Is Impossible To Fake."\n\nSTATIC WEBSITE IS READY!\n\n'
