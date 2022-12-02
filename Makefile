@@ -12,19 +12,19 @@ VOLUME_PATH		=	/home/$(USER)/data/db \
 .PHONY	:	all
 all		: 	build
 			mkdir -p $(VOLUME_PATH)
-			docker-compose -f $(COMPOSE_SOURCE) up
+			docker compose -f $(COMPOSE_SOURCE) up
 
 .PHONY	:	build
 build	:
-			docker-compose -f $(COMPOSE_SOURCE) build
+			docker compose -f $(COMPOSE_SOURCE) build
 
 .PHONY	:	clean
 clean	:
-			docker-compose -f $(COMPOSE_SOURCE) down
+			docker compose -f $(COMPOSE_SOURCE) down
 
 .PHONY	:	fclean
 fclean:
-			docker-compose -f $(COMPOSE_SOURCE) down \
+			docker compose -f $(COMPOSE_SOURCE) down \
 			--remove-orphans --rmi all -v
 
 .PHONY	:	ffclean

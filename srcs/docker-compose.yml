@@ -66,8 +66,9 @@ services:
       - adminer
       - static_www
     env_file: ./.env
-    expose:
-      - "443"
+    ports:
+      - "443:443"
+      - "4242-4244:4242-4244"
     hostname: ghan.42.fr
     networks:
       backend:
