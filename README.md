@@ -33,3 +33,18 @@ System administration by using Docker containers
 
 ## Wordpress
 - Read [a section on WordPress](docs/services/WP.md).
+
+## Redis
+- Read [a section on Redis](docs/services/REDIS.md).
+
+## FTP
+- Read [a section on FTP](docs/services/FTP.md). 
+
+## Adminer
+- Read [a section on Adminer](docs/services/ADMINER.md).
+
+## cAdvisor
+- Read [a section on cAdvisor](docs/services/cAdvisor.md).
+
+## Static Webpage
+- Read [a section on Static Webpage](docs/services/STATIC_WWW.md).

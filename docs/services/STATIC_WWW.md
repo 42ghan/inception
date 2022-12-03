@@ -3,6 +3,7 @@
 ## Quick Links
 - [Dockerfile for Static Webpage Image](../../srcs/services/static_www/Dockerfile)
 - [Static Webpage Container's Entrypoint Shell Script](../../srcs/services/static_www/static_entrypoint.sh)
+- [Docker Compose for Inception](../../srcs/docker-compose.yml)
 
 ## Summary
 - A static website is created by converting markdown documentation pages of this project to html documents.
