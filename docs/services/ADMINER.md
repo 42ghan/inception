@@ -5,7 +5,7 @@
 - Whereas [phpMyAdmin](https://www.phpmyadmin.net/) supports MySQL only, Adminer supports various other SQL databases such as PostgreSQL and SQLite.
 - Differences between phpMyAdmin and Adminer can be found in [this link](https://www.adminer.org/en/phpmyadmin/).
 
-## Quick Link
+## Quick Links
   - [Dockerfile for Adminer Image](../../srcs/services/adminer/Dockerfile)
   - [Mariadb Container's Entrypoint Shell Script](../../srcs/services/adminer/adminer_entrypoint.sh)
   - [Docker Compose for Inception](../../srcs/docker-compose.yml)

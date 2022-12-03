@@ -6,7 +6,7 @@
   - MySQL version 5.7 or greater/MariaDB version 10.3 or greater.
   - HTTPS support
 
-## Quick Link
+## Quick Links
 - [`php-fpm` Configuration](../../srcs/services/wordpress/configs/php.ini)
 - [Wordpress Configuration](../../srcs/services/wordpress/configs/www.conf)
 - [Dockerfile for wordpress Image](../../srcs/services/wordpress/Dockerfile)
