@@ -160,14 +160,11 @@ services:
       - source: ftp_config
         target: /etc/vsftpd/vsftpd.conf
     env_file: ./.env
-    expose:
-      - "20"
-      - "21"
     networks:
       backend:
         ipv4_address: 172.18.0.8
     volumes:
-      - wp_resources:/home/ghan/ftp
+      - wp_resources:/home/ghan/
     restart: on-failure
 
 # CONFIGS

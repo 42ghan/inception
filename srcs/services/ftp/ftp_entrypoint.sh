@@ -8,7 +8,7 @@ passwd $FTP_USER -d $FTP_PASSWD
 
 # Give permission to write to the group, www-data,
 # such that the $FTP_USER may upload files to the server.
-chmod g+w /home/$FTP_USER/ftp
+chmod g+w -R /home/$FTP_USER/
 
 # Execute FTP server
 echo -e '\n\n"Building a dream from your memory is the easiest way of losing your grasp on what’s real and what is a dream."\nFTP IS UP!\n\n'

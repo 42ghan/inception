@@ -137,9 +137,11 @@ apt-get install bridge-utils -y
 # net-tools 설치
 apt-get install net-tools -y
 
+# filezilla 설치
+apt-get install filezilla -y
+
 # set timezone
 ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-
 
 clear
 
