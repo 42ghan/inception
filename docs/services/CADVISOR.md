@@ -1,5 +1,10 @@
 # cAdvisor
 
+## Quick Links
+- [Dockerfile for cAdvisor Image](../../srcs/services/cadvisor/Dockerfile)
+- [cAdvisor Container's Entrypoint Shell Script](../../srcs/services/cadvisor/cadvisor_entrypoint.sh)
+- [Docker Compose for Inception](../../srcs/docker-compose.yml)
+
 ## Introduction
 - [cAdvisor](https://github.com/google/cadvisor)(Container Advisor) is a monitoring tool that provides information on resource usage and performance aspects of containers to container users.
 - cAdvisor collects, organizes and exports information about running containers. By default, itt serves the information to requests passed to the port `8080` according to HTTP via any network interface (by defaults it listens to all IPs).
@@ -16,11 +21,6 @@
         </p>
     </figure>
 - It offers options of exporting the information to thrid-party apps such as Redis, ElasticSearch, Kafka, etc. by using `-storage_driver*` options.
-	
-## Quick Links
-- [Dockerfile for cAdvisor Image](../../srcs/services/cadvisor/Dockerfile)
-- [cAdvisor Container's Entrypoint Shell Script](../../srcs/services/cadvisor/cadvisor_entrypoint.sh)
-- [Docker Compose for Inception](../../srcs/docker-compose.yml)
 
 ## Installation
 - A cAdvisor binary executable can be downloaded from [this github repository](https://github.com/google/cadvisor/releases/tag/v0.46.0).

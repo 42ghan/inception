@@ -1,13 +1,14 @@
 # NGINX
-## Introduction
-- NGINX is a popular open source HTTP and reverse proxy server, which was originally written by, a Russian engineer, [Igor Sysoev](http://sysoev.ru/en/). It can also be set up to function as a mail proxy server, and a TCP/UDP proxy server.
-- In addition to the basic feature of serving static and index files, NGINX provides caching feature and load balancing feature, with help from a paid product, NGINX Plus, as a reverse proxy server.
 
 ## Quick Links
 - [Server Configuration for ghan.42.fr](../../srcs/services/nginx/configs/ghan.42.fr.conf)
 - [Dockerfile for NGINX Image](../../srcs/services/nginx/Dockerfile)
 - [NGINX Container's Entrypoint Shell Script](../../srcs/services/nginx/nginx_entrypoint.sh)
 - [Docker Compose for Inception](../../srcs/docker-compose.yml)
+
+## Introduction
+- NGINX is a popular open source HTTP and reverse proxy server, which was originally written by, a Russian engineer, [Igor Sysoev](http://sysoev.ru/en/). It can also be set up to function as a mail proxy server, and a TCP/UDP proxy server.
+- In addition to the basic feature of serving static and index files, NGINX provides caching feature and load balancing feature, with help from a paid product, NGINX Plus, as a reverse proxy server.
 
 ## NGINX as a Web Server/Proxy
 - NGINX can be configured as a HTTP web server or as a reverse proxy. Refer to following guides:

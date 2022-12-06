@@ -1,14 +1,15 @@
 # Adminer
-## Introduction
-- Adminer is a GUI database management tool, written in PHP, which can be accessed via web browsers.
-- It is an open source project, written by Jakub Vrána.
-- Whereas [phpMyAdmin](https://www.phpmyadmin.net/) supports MySQL only, Adminer supports various other SQL databases such as PostgreSQL and SQLite.
-- Differences between phpMyAdmin and Adminer can be found in [this link](https://www.adminer.org/en/phpmyadmin/).
 
 ## Quick Links
   - [Dockerfile for Adminer Image](../../srcs/services/adminer/Dockerfile)
   - [Mariadb Container's Entrypoint Shell Script](../../srcs/services/adminer/adminer_entrypoint.sh)
   - [Docker Compose for Inception](../../srcs/docker-compose.yml)
+
+## Introduction
+- Adminer is a GUI database management tool, written in PHP, which can be accessed via web browsers.
+- It is an open source project, written by Jakub Vrána.
+- Whereas [phpMyAdmin](https://www.phpmyadmin.net/) supports MySQL only, Adminer supports various other SQL databases such as PostgreSQL and SQLite.
+- Differences between phpMyAdmin and Adminer can be found in [this link](https://www.adminer.org/en/phpmyadmin/).
 
 ## Downloading the Script
 - Adminer is a single PHP script. It can be downloaded from the official website. Following command is executed in the entrypoint shell script of the Adminer container to download the script.

@@ -1,10 +1,4 @@
 # Wordpress
-## Introduction
-- [Wordpress](https://wordpress.org/) is a free open-source software that provides tools and resources to create, customize and publish websites, blogs and applications.
-- It is written in PHP and paired with a database system, MySQL or MariaDB. Following is the recommended requirements to run Wordpress:
-  - PHP version 7.4 or greater.
-  - MySQL version 5.7 or greater/MariaDB version 10.3 or greater.
-  - HTTPS support
 
 ## Quick Links
 - [`php-fpm` Configuration](../../srcs/services/wordpress/configs/php.ini)
@@ -12,6 +6,13 @@
 - [Dockerfile for wordpress Image](../../srcs/services/wordpress/Dockerfile)
 - [Wordpress Container's Entrypoint Shell Script](../../srcs/services/wordpress/wp_entrypoint.sh)
 - [Docker Compose for Inception](../../srcs/docker-compose.yml)
+
+## Introduction
+- [Wordpress](https://wordpress.org/) is a free open-source software that provides tools and resources to create, customize and publish websites, blogs and applications.
+- It is written in PHP and paired with a database system, MySQL or MariaDB. Following is the recommended requirements to run Wordpress:
+  - PHP version 7.4 or greater.
+  - MySQL version 5.7 or greater/MariaDB version 10.3 or greater.
+  - HTTPS support
 
 ## Setting Up
 ### PHP

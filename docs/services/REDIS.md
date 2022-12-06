@@ -1,16 +1,16 @@
 # Redis
 
-## Introduction
-- "Redis is an open source (BSD licensed), in-memory data structure store used as a database, cache, message broker, and streaming engine." - Redis Website.
-- Redis stores data as key-value pairs and provides various data structures such as strings, lists, sets, sorted sets, etc.
-- By either using `RDB(Redis Database)`, `AOF(Append Only File)`, or both, Redis can be used as a persistent data storage. There are trade-offs of each of these two techniques. To further investigate on this topic, refer to [this page](https://redis.io/docs/management/persistence/).
-- The project was started by `Salvatore Sanfilippo`(http://invece.org/) in 2009.
-
 ## Quick Links
 - [Redis Configuration for Inception - /etc/my.cnf](../../srcs/services/redis/configs/my.cnf)
 - [Dockerfile for Redis Image](../../srcs/services/redis/Dockerfile)
 - [Redis Container's Entrypoint Shell Script](../../srcs/services/redis/db_entrypoint.sh)
 - [Docker Compose for Inception](../../srcs/docker-compose.yml)
+
+## Introduction
+- "Redis is an open source (BSD licensed), in-memory data structure store used as a database, cache, message broker, and streaming engine." - Redis Website.
+- Redis stores data as key-value pairs and provides various data structures such as strings, lists, sets, sorted sets, etc.
+- By either using `RDB(Redis Database)`, `AOF(Append Only File)`, or both, Redis can be used as a persistent data storage. There are trade-offs of each of these two techniques. To further investigate on this topic, refer to [this page](https://redis.io/docs/management/persistence/).
+- The project was started by `Salvatore Sanfilippo`(http://invece.org/) in 2009.
 
 ## Installation
 - In Alpine Linux, Redis can be easily installed via the `apk` package manager.
