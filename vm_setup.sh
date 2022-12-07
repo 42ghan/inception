@@ -118,6 +118,8 @@ apt-get install \
     gnupg \
     lsb-release -y
 
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
 mkdir -p /etc/apt/keyrings && curl -4fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 echo \
@@ -155,6 +157,6 @@ service docker start
 
 echo '{"features":{"buildkit":true}}' > /etc/docker/daemon.json
 
-echo -e "192.168.35.31 ghan.42.fr\n" >> /etc/hosts
+echo -e "`ip addr | grep 'inet ' | awk 'FNR == 2 { print $2 }' | cut -f1 -d"/"` ghan.42.fr\n" >> /etc/hosts
 
 exec bash
