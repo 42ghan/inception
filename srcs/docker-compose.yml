@@ -9,6 +9,7 @@ services:
   mariadb:
     build:
       context: ./services/mariadb
+    image: mariadb
     container_name: mariadb
     configs:
       - source: db_config
@@ -28,6 +29,7 @@ services:
   wordpress:
     build:
       context: ./services/wordpress
+    image: wordpress
     container_name: wordpress
     configs:
       - source: wp_fpm_config
@@ -55,6 +57,7 @@ services:
   nginx:
     build:
       context: ./services/nginx
+    image: nginx
     container_name: nginx
     configs:
       - source: nginx_global_config
@@ -84,6 +87,7 @@ services:
   adminer:
     build:
       context: ./services/adminer
+    image: adminer
     container_name: adminer
     configs:
       - source: adminer_fpm_config
@@ -107,6 +111,7 @@ services:
   redis:
     build:
       context: ./services/redis
+    image: redis
     container_name: redis
     configs:
       - source: redis_config
@@ -125,6 +130,7 @@ services:
     privileged: true
     build:
       context: ./services/cadvisor
+    image: cadvisor
     container_name: cadvisor
     expose:
       - "8080"
@@ -146,6 +152,7 @@ services:
   static_www:
     build:
       context: ./services/static_www
+    image: static_www
     container_name: static_www
     volumes:
       - static_resources:/var/www/static
@@ -155,6 +162,7 @@ services:
   ftp:
     build:
       context: ./services/ftp
+    image: ftp
     container_name: ftp
     configs:
       - source: ftp_config
