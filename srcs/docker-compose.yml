@@ -154,6 +154,9 @@ services:
       context: ./services/static_www
     image: static_www
     container_name: static_www
+    networks:
+      backend:
+        ipv4_address: 172.18.0.9
     volumes:
       - static_resources:/var/www/static
     restart: on-failure
