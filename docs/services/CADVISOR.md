@@ -79,7 +79,7 @@
     listen   4244;
     server_name  static;
     
-    access_log  /var/log/nginx/cadvisor.log  main;
+    access_log  /dev/stdout  main;
 
     location / {
         proxy_pass  http://172.18.0.7:8080;

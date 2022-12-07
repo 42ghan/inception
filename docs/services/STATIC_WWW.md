@@ -35,7 +35,7 @@
     listen   4243;
     server_name  static;
     
-    access_log  /var/log/nginx/static.log  main;
+    access_log  /dev/stdout  main;
 
     root /var/www/static;
 

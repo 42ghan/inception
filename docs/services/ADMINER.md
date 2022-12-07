@@ -42,7 +42,7 @@
     listen   4242; # Listen to the port 4242
     server_name  adminer;
     
-    access_log  /var/log/nginx/adminer.log  main;
+    access_log  /dev/stdout  main;
 
     root /var/www/adminer;
     index index.php;

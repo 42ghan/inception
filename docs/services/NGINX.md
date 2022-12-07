@@ -1,7 +1,7 @@
 # NGINX
 
 ## Quick Links
-- [Server Configuration for ghan.42.fr](../../srcs/services/nginx/configs/ghan.42.fr.conf)
+- [Server Configuration for ghan.42.fr](../../srcs/services/nginx/configs/servers/ghan.42.fr.conf)
 - [Dockerfile for NGINX Image](../../srcs/services/nginx/Dockerfile)
 - [NGINX Container's Entrypoint Shell Script](../../srcs/services/nginx/nginx_entrypoint.sh)
 - [Docker Compose for Inception](../../srcs/docker-compose.yml)
