@@ -25,6 +25,8 @@ if [[ ! -f /var/www/ghan.42.fr/index.php ]]; then
 	&& su-wp redis enable
 fi
 
+sed -i 's/;error_log = .*/error_log = \/dev\/stderr/' /etc/php7/php-fpm.conf
+
 # Execute php-fpm
 echo -e '\n\n"You Mustn’t Be Afraid To Dream A Little Bigger, Darling."\nWORDPRESS IS READY!\n\n'
 exec tini -- "$@"

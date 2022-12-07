@@ -4,7 +4,7 @@ set -e
 
 # Make a new user & give a password
 id $FTP_USER > /dev/null 2>&1 || adduser -DH $FTP_USER -G www-data
-passwd $FTP_USER -d $FTP_PASSWD
+passwd $FTP_USER -d $FTP_PASSWD > /dev/null 2>&1
 
 # Give permission to write to the group, www-data,
 # such that the $FTP_USER may upload files to the server.
