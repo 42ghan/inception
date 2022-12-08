@@ -2,8 +2,10 @@
 
 set -e
 
-curl -LO https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1-mysql-en.php \
-&& mv adminer-4.8.1-mysql-en.php /var/www/adminer/index.php
+if [[ ! -f /var/www/adminer/index.php ]]; then
+	curl -LO https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1-mysql-en.php \
+	&& mv adminer-4.8.1-mysql-en.php /var/www/adminer/index.php
+fi
 
 sed -i 's/;error_log = .*/error_log = \/dev\/stderr/' /etc/php7/php-fpm.conf
 

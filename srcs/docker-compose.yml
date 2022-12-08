@@ -125,6 +125,19 @@ services:
         ipv4_address: 172.18.0.6
     restart: on-failure
 
+  # STATIC
+  static_www:
+    build:
+      context: ./services/static_www
+    image: static_www
+    container_name: static_www
+    networks:
+      backend:
+        ipv4_address: 172.18.0.9
+    volumes:
+      - static_resources:/var/www/static
+    restart: on-failure
+
   # CADVISOR
   cadvisor:
     privileged: true
@@ -146,19 +159,6 @@ services:
       - /dev/disk/:/dev/disk:ro \
     devices:
       - "/dev/kmsg:/dev/kmsg"
-    restart: on-failure
-
-  # STATIC
-  static_www:
-    build:
-      context: ./services/static_www
-    image: static_www
-    container_name: static_www
-    networks:
-      backend:
-        ipv4_address: 172.18.0.9
-    volumes:
-      - static_resources:/var/www/static
     restart: on-failure
 
   # FTP
