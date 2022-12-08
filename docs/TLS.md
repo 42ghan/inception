@@ -1,9 +1,11 @@
 # TLS
 
-## Why TLS?
-- Authentication
-- Confidentiality
-- Integrity
+## Introduction
+- TLS stands for Transport Layer Security. It was conceived as SSL(Secure Socket Layer) in 1995 and later changed its name to TLS as it was developed.
+- TLS provides these aspects of security in data transport process:
+  - **Authentication** - ensures the parties exchanging data are who they claim to be.
+  - **Confidentiality** - the data is encrypted, so third parties cannot understand the data.
+  - **Integrity** - verifies that the data is not corrupted.
 
 ## Procedure
 - Handshake protocol (Authentication)
@@ -107,3 +109,4 @@
 - [DEV Community. (n.d.). A complete overview of SSL/TLS and its cryptographic system. [online]](https://dev.to/techschoolguru/a-complete-overview-of-ssl-tls-and-its-cryptographic-system-36pd)
 - [DEV Community. (n.d.). How to create & sign SSL/TLS certificates. [online]](https://dev.to/techschoolguru/how-to-create-sign-ssl-tls-certificates-2aai)
 - [Cloudflare (2021). What Is Transport Layer Security? | TLS Protocol | Cloudflare. Cloudflare. [online]](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/)
+- [High Performance Browser Networking. (n.d.). Networking 101: Transport Layer Security (TLS) - High Performance Browser Networking (O’Reilly). [online]](https://hpbn.co/transport-layer-security-tls/)
