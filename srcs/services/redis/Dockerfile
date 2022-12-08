@@ -1,7 +1,7 @@
-FROM alpine:3.15
+FROM alpine:3.16
 
 RUN apk update \
-	&& apk add --no-cache redis=6.2.7-r0 \
+	&& apk add --no-cache redis=7.0.5-r0 \
 	tini=0.19.0-r0 \
 	su-exec=0.2-r1 \
 	tzdata=2022f-r1 \

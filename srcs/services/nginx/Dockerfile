@@ -1,10 +1,10 @@
-FROM alpine:3.15
+FROM alpine:3.16
 
 # Install necessary pacakges & set timezone
 RUN apk update \
 	&& apk add --no-cache ca-certificates=20220614-r0 \
-	curl=7.80.0-r4 \
-	openssl=1.1.1s-r1 \
+	curl=7.83.1-r4 \
+	openssl=1.1.1s-r0 \
 	tini=0.19.0-r0 \
 	tzdata=2022f-r1 \
 	&& cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \

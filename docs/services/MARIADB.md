@@ -102,7 +102,7 @@
 ## Starting the Server
 - Now the server must be ready to run! Run mariadb server by executing `mariadbd` with the `--user=mysql` option.
   - Executing `mariadbd` manually is a way to start the server daemon in the context of containerized environment, where there is no init system. However, if there is an init system such as `systemd` or `Open RC`, the server can be started by using the system dependent init system interface (e.g. `service mariadb start` in case of `systemd` based systems).
-- When the server needs to be started manually, MariaDB recommends running `mariadbd-safe` instead of `maraidbd`. It is a wrapper that starts the database server with some extra safety features, such as automatically restarting the server when it crashes.
+- When the server needs to be started manually, MariaDB recommends running `mariadbd-safe` instead of `mariadbd`. It is a wrapper that starts the database server with some extra safety features, such as automatically restarting the server when it crashes.
   - However, in this project, `mariadbd-safe` was not used for the script sets a signal handler to ignore `SIGTERM`. This causes a problem because `docker stop` terminates containers by sending `SIGTERM`. Once `mariadbd-safe` receives SIGTERM from the host, it will not pass the signal to its child process `mariadbd`. After waiting for a certain amount of time (10 seconds by default), `dockerd` will send `SIGKILL` to forcefully terminate the container and the database server will lose its chance to gracefully shutdown its process. Below are demonstrations.
     - `mariadbd` executes its shutdown procedure once it receives `SIGTERM`.
       <figure>

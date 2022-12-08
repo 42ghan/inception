@@ -20,15 +20,14 @@
 - PHP and some libraries need to be installed by a package manager.
 	```bash
 	apk update \
-	&& apk add php7=7.4.33-r0 \ # PHP
-	php7-fpm=7.4.33-r0 \ # FastCGI Process Manager (FPM)
-	php7-opcache=7.4.33-r0 \ # PHP cache system
-	php7-gd=7.4.33-r0 \ # Create, manipulate, output image files
-	php7-mysqli=7.4.33-r0 \ # MySQL Improved Extension
-	php7-curl=7.4.33-r0 \ # libcurl, http, https, ftp, gopher, telnet, etc.
-	php7-phar=7.4.33-r0 \ # PHP Archive for easy distribution and installation
-	php7-json=7.4.33-r0 \ # JSON support
-	php7-iconv=7.4.33-r0 # Character encoding converter
+	&& apk add php8=8.0.26-r0 \ # PHP
+	php8-fpm=8.0.26-r0 \ # FastCGI Process Manager (FPM)
+	php8-opcache=8.0.26-r0 \ # PHP cache system
+	php8-gd=8.0.26-r0 \ # Create, manipulate, output image files
+	php8-mysqli=8.0.26-r0 \ # MySQL Improved Extension
+	php8-curl=8.0.26-r0 \ # libcurl, http, https, ftp, gopher, telnet, etc.
+	php8-phar=8.0.26-r0 \ # PHP Archive for easy distribution and installation
+	php8-iconv=8.0.26-r0 # Character encoding converter
 	```
 	> Package managers may not support the latest stable version. It is possible to download the source and build it. But, such a way is not suitable for container environment because it takes too long to compile.
 ### `PHP-FPM`
@@ -128,7 +127,7 @@
 
 ### `wp-cli`
 - `wp-cli` is the command line tool for managing Wordpress sites.
-- The recommended way to install is by downloading the `Phar` (PHP archive) build. (`php7-phar` needs to be installed to run the command).
+- The recommended way to install is by downloading the `Phar` (PHP archive) build. (`php8-phar` needs to be installed to run the command).
   ```bash
   # Download wp-cli.phar
   curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

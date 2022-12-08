@@ -33,9 +33,9 @@ services:
     container_name: wordpress
     configs:
       - source: wp_fpm_config
-        target: /etc/php7/php.ini
+        target: /etc/php8/php.ini
       - source: wp_config
-        target: /etc/php7/php-fpm.d/www.conf
+        target: /etc/php8/php-fpm.d/www.conf
     depends_on:
       mariadb:
         condition: service_healthy
@@ -91,9 +91,9 @@ services:
     container_name: adminer
     configs:
       - source: adminer_fpm_config
-        target: /etc/php7/php.ini
+        target: /etc/php8/php.ini
       - source: adminer_config
-        target: /etc/php7/php-fpm.d/www.conf
+        target: /etc/php8/php-fpm.d/www.conf
     depends_on:
       mariadb:
         condition: service_healthy

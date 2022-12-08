@@ -11,16 +11,16 @@ if [[ ! -d /var/lib/mysql/mysql ]]; then
 	# Execute mariadb server
 	"$@" &
 
-	# Wait until maraidb server is ready
+	# Wait until mariadb server is ready
 	mariadb-admin ping --wait=.5 --connect-timeout=10
 
 	# Initialize user and restart db
-	mariadb -u root -e "DROP DATABASE IF EXISTS test;" \
-	&& mariadb -u root -e "CREATE DATABASE wordpress;" \
-	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$WP_REMOTE_ADDRESS';" \
-	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO '$DB_USER'@'$WP_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';" \
-	&& mariadb -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'$ADMINER_REMOTE_ADDRESS';" \
-	&& mariadb -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO '$DB_USER'@'$ADMINER_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';"
+	mariadb -u root -e "DROP DATABASE IF EXISTS test; \
+	CREATE DATABASE wordpress; \
+	CREATE USER IF NOT EXISTS '$DB_USER'@'$WP_REMOTE_ADDRESS'; \
+	GRANT ALL PRIVILEGES ON wordpress.* TO '$DB_USER'@'$WP_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD'; \
+	CREATE USER IF NOT EXISTS '$DB_USER'@'$ADMINER_REMOTE_ADDRESS'; \
+	GRANT ALL PRIVILEGES ON wordpress.* TO '$DB_USER'@'$ADMINER_REMOTE_ADDRESS' IDENTIFIED BY '$DB_PASSWD';"
 
 	# Stop current mariadb server
 	mariadb-admin shutdown
