@@ -18,7 +18,7 @@
   - Setting up NGINX and Wordpress [by NGINX](https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/) and [by Wordpress](https://wordpress.org/support/article/nginx/)
 
 ### Setting up a TLS layer
-<!-- TODO -->
+- Refer to the section on [TLS](../TLS.md) and [NGINX SSL configuration options](http://nginx.org/en/docs/http/ngx_http_ssl_module.html).
 
 ## NGINX as a Load Balancer
 - NGINX & NGINX Plus can be configured to act as a proxy that distributes requests to pools of multiple web/application servers, under a certain policy, to prevent overloading some servers while there are some idle servers.

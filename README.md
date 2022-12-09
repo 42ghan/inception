@@ -17,8 +17,8 @@ System administration by using Docker containers
 ## Docker
 - Read [a section on Docker](docs/DOCKER.md).
 
-## PID 1
-- Read [a section on PID 1](docs/PIDONE.md).
+## TLS
+- Read [a section on TLS](docs/TLS.md).
 
 ---
 
