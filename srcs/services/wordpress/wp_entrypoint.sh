@@ -29,8 +29,8 @@ if [[ ! -f /var/www/ghan.42.fr/index.php ]]; then
 	
 	# WP Redis plugin
 	su-wp plugin install --activate redis-cache \
-	&& su-wp config set WP_REDIS_HOST $REDIS_HOST \
-	&& su-wp config set WP_REDIS_PASSWORD $REDIS_PASSWD \
+	&& su-wp config set WP_REDIS_HOST $REDIS_HOST > /dev/null \
+	&& su-wp config set WP_REDIS_PASSWORD $REDIS_PASSWD > /dev/null \
 	&& su-wp redis enable
 fi
 
