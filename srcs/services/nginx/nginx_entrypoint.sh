@@ -5,6 +5,8 @@ set -e
 mkdir -p /srv/www/ssl \
 && cd /srv/www/ssl
 
+echo -e "\nPrepare Digital Certificate for TLS layer\n\n"
+
 # Create CA's Certificate
 openssl req -x509 -newkey rsa:4096 -days 365 -keyout ca-key.pem -out ca-cert.pem \
 -nodes -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Education/CN=ghan.42.fr/emailAddress=$NGINX_USER_EMAIL" > /dev/null 2>&1
