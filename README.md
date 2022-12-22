@@ -29,7 +29,7 @@ System administration by using Docker containers
 - Read [a section on MariaDB](docs/services/MARIADB.md).
 
 ## NGINX
-- Read [a section on MariaDB](docs/services/NGINX.md). 
+- Read [a section on NGINX](docs/services/NGINX.md). 
 
 ## Wordpress
 - Read [a section on WordPress](docs/services/WP.md).
