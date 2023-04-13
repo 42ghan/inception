@@ -126,7 +126,7 @@
 
 ### IPC Namespace
 
-- IPC namespaces isolate [System V IPC objects](https://man7.org/linux/man-pages/man7/sysvipc.7.html) and POSIC message queues.
+- IPC namespaces isolate [System V IPC objects](https://man7.org/linux/man-pages/man7/sysvipc.7.html) and POSIX message queues.
 - Only the processes inside the same IPC namespace can see the IPC objects created in the namespace. The objects are invisible to processes outside the namespace.
 - `/proc` interfaces distinct in each IPC namespace:
   - The POSIX message queue interfaces in `/proc/sys/fs/mqueue`.
