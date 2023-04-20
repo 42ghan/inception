@@ -1,6 +1,7 @@
 # Inception
 
 System administration by using Docker containers
+![](docs/docker-compose.png)
 
 ---
 
